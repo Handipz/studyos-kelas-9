@@ -804,6 +804,57 @@ export function normalizePhoneNumber(rawPhone: string): string {
   return digits;
 }
 
+export interface WhatsAppPhoneValidationResult {
+  valid: boolean;
+  normalized: string;
+  reason?: string;
+}
+
+/**
+ * Validates that a phone number is a genuine-format Indonesian mobile WhatsApp number
+ * (starts with 08/628, 10-15 digits, and is not a dummy/fake sequential or repeated number).
+ */
+export function isValidWhatsAppPhone(
+  rawPhone: string
+): WhatsAppPhoneValidationResult {
+  const normalized = normalizePhoneNumber(rawPhone);
+  if (!normalized || !/^628[1-9][0-9]{6,11}$/.test(normalized)) {
+    return {
+      valid: false,
+      normalized,
+      reason:
+        'Masukkan nomor WhatsApp aktif yang valid (diawali 08xx atau 628xx, 10–14 digit).',
+    };
+  }
+
+  const subscriberDigits = normalized.slice(3); // digits after '628'
+  const fakePatterns = [
+    '12345678',
+    '123456789',
+    '1234567890',
+    '987654321',
+    '0000000',
+  ];
+
+  if (
+    /(.)\1{6,}/.test(subscriberDigits) ||
+    fakePatterns.some((pat) => subscriberDigits.includes(pat))
+  ) {
+    return {
+      valid: false,
+      normalized,
+      reason:
+        'Nomor WhatsApp terdeteksi tidak valid / nomor contoh. Gunakan nomor WhatsApp asli dan aktif milik Anda.',
+    };
+  }
+
+  return {
+    valid: true,
+    normalized,
+  };
+}
+
+
 /**
  * Validates Admin credentials (`admin` / `admin 123` as requested by user, also accepting `admin123`).
  */

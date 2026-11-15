@@ -262,22 +262,22 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Top KPI Summary Row */}
-      <section aria-label="Ringkasan Produktivitas Harian" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="space-y-5 sm:space-y-8">
+      {/* Top KPI Summary Row: 2x2 compact grid on mobile, 4 cols on desktop */}
+      <section aria-label="Ringkasan Produktivitas Harian" className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Card 1: Ketuntasan Harian (Tugas & Kegiatan) */}
-        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-5 flex flex-col justify-between">
+        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-5 flex flex-col justify-between">
           <div className="flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-medium">Ketuntasan Tugas & Kegiatan</span>
-            <CheckSquare className="w-4 h-4 text-[#2563EB]" />
+            <CheckSquare className="w-4 h-4 text-[#2563EB] shrink-0" />
           </div>
-          <div className="my-3">
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl font-bold font-mono tabular-nums text-[#0F172A] dark:text-[#F8FAFC]">
+          <div className="my-2.5 sm:my-3">
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-[#0F172A] dark:text-[#F8FAFC]">
                 {progress.percentage}%
               </span>
-              <span className="text-xs font-mono tabular-nums text-[#475569] dark:text-[#94A3B8]">
-                Tugas {progress.completed}/{progress.total} · Kegiatan {activityProgress.completed}/{activityProgress.total}
+              <span className="text-[11px] sm:text-xs font-mono tabular-nums text-[#475569] dark:text-[#94A3B8] truncate">
+                Tugas {progress.completed}/{progress.total} · Agenda {activityProgress.completed}/{activityProgress.total}
               </span>
             </div>
             <div className="w-full h-2 bg-[#E2E8F0] dark:bg-[#1E293B] rounded-full overflow-hidden mt-2">
@@ -287,7 +287,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
               />
             </div>
           </div>
-          <p className="text-xs text-[#475569] dark:text-[#94A3B8]">
+          <p className="text-[11px] sm:text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-mono tabular-nums font-semibold text-[#DC2626]">
               {progress.urgentPending}
             </span>{' '}
@@ -295,72 +295,72 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
             <span className="font-mono tabular-nums font-semibold text-[#2563EB]">
               {activityProgress.mandatoryPending}
             </span>{' '}
-            Kegiatan Wajib hari ini
+            Kegiatan Wajib
           </p>
         </div>
 
         {/* Card 2: Flashcard Due Today */}
-        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
-            <span className="font-medium">Flashcard Jatuh Tempo</span>
-            <Brain className="w-4 h-4 text-[#2563EB]" />
+        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-3.5 sm:p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between gap-1 text-[11px] sm:text-xs text-[#475569] dark:text-[#94A3B8]">
+            <span className="font-medium truncate">Flashcard Hari Ini</span>
+            <Brain className="w-4 h-4 text-[#2563EB] shrink-0" />
           </div>
-          <div className="my-3">
+          <div className="my-2 sm:my-3">
             <span
               data-testid="dashboard-due-flashcards"
-              className="text-2xl font-bold font-mono tabular-nums text-[#0F172A] dark:text-[#F8FAFC]"
+              className="text-lg sm:text-2xl font-bold font-mono tabular-nums text-[#0F172A] dark:text-[#F8FAFC]"
             >
               {dueFlashcardsCount} Kartu
             </span>
-            <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-1">
-              Siap diuji dengan Active Recall hari ini
+            <p className="text-[11px] sm:text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5 line-clamp-1">
+              Siap diuji Active Recall
             </p>
           </div>
           <button
             type="button"
             onClick={() => onNavigateTab('recall')}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] hover:underline whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-[#2563EB] hover:underline whitespace-nowrap shrink-0"
           >
-            <span>Mulai Review Sekarang</span>
+            <span>Mulai Review</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Card 3: Spaced Review Alert (>7 Days) */}
-        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-5 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
-            <span className="font-medium">Bab Perlu Disentuh (&gt;7 Hari)</span>
-            <BookOpen className="w-4 h-4 text-[#D97706]" />
+        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-3.5 sm:p-5 flex flex-col justify-between">
+          <div className="flex items-center justify-between gap-1 text-[11px] sm:text-xs text-[#475569] dark:text-[#94A3B8]">
+            <span className="font-medium truncate">Bab &gt;7 Hari</span>
+            <BookOpen className="w-4 h-4 text-[#D97706] shrink-0" />
           </div>
-          <div className="my-3">
-            <span className="text-2xl font-bold font-mono tabular-nums text-[#D97706]">
+          <div className="my-2 sm:my-3">
+            <span className="text-lg sm:text-2xl font-bold font-mono tabular-nums text-[#D97706]">
               {staleChaptersCount} Bab
             </span>
-            <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-1">
-              Belum dipelajari ulang lebih dari 7 hari
+            <p className="text-[11px] sm:text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5 line-clamp-1">
+              Perlu dipelajari ulang
             </p>
           </div>
           <button
             type="button"
             onClick={() => onNavigateTab('curriculum')}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] hover:underline whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-[#2563EB] hover:underline whitespace-nowrap shrink-0"
           >
-            <span>Buka Peta Kurikulum</span>
+            <span>Peta Kurikulum</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Card 4: Jam Belajar Focus Studio */}
-        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-5 flex flex-col justify-between">
+        <div className="col-span-2 sm:col-span-1 bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-5 flex flex-col justify-between">
           <div className="flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
             <span className="font-medium">Total Waktu Fokus</span>
-            <Clock className="w-4 h-4 text-[#16A34A]" />
+            <Clock className="w-4 h-4 text-[#16A34A] shrink-0" />
           </div>
-          <div className="my-3">
-            <span className="text-2xl font-bold font-mono tabular-nums text-[#0F172A] dark:text-[#F8FAFC]">
+          <div className="my-2 sm:my-3">
+            <span className="text-xl sm:text-2xl font-bold font-mono tabular-nums text-[#0F172A] dark:text-[#F8FAFC]">
               {Math.floor(totalStudyMinutes / 60)}j {totalStudyMinutes % 60}m
             </span>
-            <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-1">
+            <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
               <span className="font-mono tabular-nums">{studyLogs.length}</span> sesi Deep Work tercatat
             </p>
           </div>
@@ -376,33 +376,35 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
       </section>
 
       {/* Main Split Grid: Left = Side-by-Side Tabs (Tugas Akademik vs Kegiatan Harian), Right = Smart Tomorrow Alert & Pinned Formulas */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
         {/* Left 7 Cols: Dual To-Do List Hub (Tugas & PR Akademik + Agenda & Kegiatan Harian) */}
-        <section className="lg:col-span-7 bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6">
+        <section className="lg:col-span-7 bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 min-w-0">
           {/* Side-by-Side Mode Switcher */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
-            <div className="flex items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+            <div className="grid grid-cols-2 sm:flex items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setTodoTab('academic')}
-                className={`px-3.5 py-2 text-xs font-bold rounded-md transition-colors whitespace-nowrap shrink-0 ${
+                className={`min-h-[40px] px-2.5 sm:px-3.5 py-2 text-xs font-bold rounded-md transition-colors truncate ${
                   todoTab === 'academic'
                     ? 'bg-[#2563EB] text-white'
                     : 'text-[#475569] dark:text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-white'
                 }`}
               >
-                Tugas & PR Akademik ({tasks.length})
+                <span className="sm:hidden">Tugas & PR ({tasks.length})</span>
+                <span className="hidden sm:inline">Tugas & PR Akademik ({tasks.length})</span>
               </button>
               <button
                 type="button"
                 onClick={() => setTodoTab('activities')}
-                className={`px-3.5 py-2 text-xs font-bold rounded-md transition-colors whitespace-nowrap shrink-0 ${
+                className={`min-h-[40px] px-2.5 sm:px-3.5 py-2 text-xs font-bold rounded-md transition-colors truncate ${
                   todoTab === 'activities'
                     ? 'bg-[#2563EB] text-white'
                     : 'text-[#475569] dark:text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-white'
                 }`}
               >
-                Agenda & Kegiatan Harian ({activities.length})
+                <span className="sm:hidden">Kegiatan ({activities.length})</span>
+                <span className="hidden sm:inline">Agenda & Kegiatan Harian ({activities.length})</span>
               </button>
             </div>
 
@@ -410,7 +412,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddTaskModal((v) => !v)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0"
+                className="w-full sm:w-auto min-h-[42px] inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0"
               >
                 <Plus className="w-4 h-4" />
                 <span>Tambah Tugas / PR</span>
@@ -419,7 +421,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddActivityModal((v) => !v)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0"
+                className="w-full sm:w-auto min-h-[42px] inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0"
               >
                 <Plus className="w-4 h-4" />
                 <span>Tambah Kegiatan Baru</span>
@@ -621,8 +623,8 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                 </form>
               )}
 
-              {/* Interactive Filter Controls (Segmented Bar) */}
-              <div className="flex flex-wrap items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg mt-4">
+              {/* Interactive Filter Controls (Horizontal Scrollable Bar on Mobile) */}
+              <div className="flex overflow-x-auto no-scrollbar items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg mt-4 max-w-full">
                 {(['ALL', 'Urgent & Penting', 'Penting / Tidak Urgent', 'Cicil Santai'] as const).map(
                   (prio) => (
                     <button
@@ -904,8 +906,8 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                 </form>
               )}
 
-              {/* Activity Category Filter Bar */}
-              <div className="flex flex-wrap items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg mt-4">
+              {/* Activity Category Filter Bar (Horizontal Scrollable on Mobile) */}
+              <div className="flex overflow-x-auto no-scrollbar items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg mt-4 max-w-full">
                 <button
                   type="button"
                   onClick={() => setActivityCategoryFilter('ALL')}
@@ -1015,17 +1017,17 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
         </section>
 
         {/* Right 5 Cols: Smart Tomorrow Alert + Pinned Formula Cheat-Sheet */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-5 space-y-5 sm:space-y-6 min-w-0">
           {/* Smart Tomorrow Alert Widget */}
           <section
             aria-label="Auto-Reminder Jadwal Besok"
-            className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6"
+            className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6"
           >
-            <div className="flex items-start justify-between gap-2 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+            <div className="flex flex-wrap items-start justify-between gap-2 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
               <div>
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#2563EB]" />
-                  <h2 className="text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+                  <Calendar className="w-4 h-4 text-[#2563EB] shrink-0" />
+                  <h2 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                     Smart Tomorrow Alert ({tomorrowAlert.tomorrowDay})
                   </h2>
                 </div>
@@ -1038,7 +1040,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                 aria-label="Pilih hari jadwal untuk dipratinjau"
                 value={tomorrowAlert.tomorrowDay}
                 onChange={(e) => setSelectedTomorrowPreview(e.target.value as SchoolDay)}
-                className="px-2.5 py-1 text-xs font-medium bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-md text-[#0F172A] dark:text-[#F8FAFC]"
+                className="px-2.5 py-1.5 text-xs font-medium bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-md text-[#0F172A] dark:text-[#F8FAFC]"
               >
                 {SCHOOL_DAYS.map((d) => (
                   <option key={d} value={d}>
@@ -1077,11 +1079,11 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
             <div className="mt-4 divide-y divide-[#E2E8F0] dark:divide-[#1E293B]">
               {tomorrowAlert.items.map((item) => (
                 <div key={item.slot.id} className="py-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-sm font-semibold text-[#0F172A] dark:text-[#F8FAFC]">
                       {item.subjectName}
                     </span>
-                    <span className="text-xs font-mono tabular-nums text-[#475569] dark:text-[#94A3B8]">
+                    <span className="text-xs font-mono tabular-nums text-[#475569] dark:text-[#94A3B8] shrink-0">
                       {item.slot.period} · {item.slot.roomOrNote || 'R. 9A'}
                     </span>
                   </div>
@@ -1122,11 +1124,11 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
           </section>
 
           {/* Pinned Formula & Cheat-Sheet Quick Access */}
-          <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0] dark:border-[#1E293B]">
-              <div className="flex items-center gap-2">
-                <Pin className="w-4 h-4 text-[#2563EB]" />
-                <h2 className="text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+          <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6">
+            <div className="flex items-center justify-between gap-2 pb-3 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+              <div className="flex items-center gap-2 min-w-0">
+                <Pin className="w-4 h-4 text-[#2563EB] shrink-0" />
+                <h2 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-[#F8FAFC] truncate">
                   Rumus Kilat Tersemat (Pinned)
                 </h2>
               </div>
@@ -1135,7 +1137,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                 onClick={() => onNavigateTab('recall')}
                 className="text-xs font-semibold text-[#2563EB] hover:underline whitespace-nowrap shrink-0"
               >
-                Lihat Semua Rumus
+                Lihat Semua
               </button>
             </div>
 
@@ -1144,22 +1146,22 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
                 const subItems = resolveSubFormulas(form);
                 return (
                   <div key={form.id} className="py-3">
-                    <div className="flex items-center justify-between text-xs text-[#475569] dark:text-[#94A3B8]">
+                    <div className="flex items-center justify-between gap-2 text-xs text-[#475569] dark:text-[#94A3B8]">
                       <span className="font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                         {form.title} :
                       </span>
-                      <span>{getSubjectName(form.subjectId)}</span>
+                      <span className="shrink-0">{getSubjectName(form.subjectId)}</span>
                     </div>
                     <div className="mt-1.5 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded divide-y divide-[#E2E8F0] dark:divide-[#1E293B]">
                       {subItems.map((sf, idx) => (
                         <div
                           key={`${form.id}-pin-sf-${idx}`}
-                          className="px-3 py-1.5 flex items-center justify-between gap-2 text-xs"
+                          className="px-3 py-1.5 flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-2 text-xs"
                         >
                           <span className="font-medium text-[#0F172A] dark:text-[#F8FAFC]">
                             {sf.target} :
                           </span>
-                          <span className="font-mono font-bold text-[#2563EB] dark:text-blue-400">
+                          <span className="font-mono font-bold text-[#2563EB] dark:text-blue-400 break-words">
                             {sf.expr}
                           </span>
                         </div>
@@ -1174,10 +1176,10 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
       </div>
 
       {/* Full Monday-Saturday Class Schedule Table */}
-      <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6">
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+      <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
           <div>
-            <h2 className="text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+            <h2 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
               Jadwal Pelajaran Kelas 9 (Senin – Sabtu)
             </h2>
             <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
@@ -1187,7 +1189,7 @@ export const CommandCenterView: React.FC<CommandCenterViewProps> = ({
           <button
             type="button"
             onClick={() => setShowAddScheduleForm((v) => !v)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB] rounded-lg transition-colors whitespace-nowrap shrink-0"
+            className="w-full sm:w-auto min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB] rounded-lg transition-colors whitespace-nowrap shrink-0"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Tambah Jam Pelajaran</span>

@@ -25,6 +25,7 @@ import {
   computeSessionIntegritySignature,
   evaluateLoginLockout,
   evaluateOtpRateLimit,
+  isValidWhatsAppPhone,
   LoginLockoutEvaluation,
   normalizePhoneNumber,
   OtpRateLimitEvaluation,
@@ -301,18 +302,31 @@ export interface SendOtpResult {
 }
 
 /**
- * Sends a 6-digit OTP code via Fonnte WhatsApp API (https://api.fonnte.com/send)
- * and logs the verification event in Cloud Firestore + Local Storage.
- * The code is only ever delivered through the WhatsApp bot; it is never rendered
- * in the web UI nor stored in plaintext in the audit log.
+ * Sends a 6-digit OTP code strictly via Fonnte WhatsApp API (https://api.fonnte.com/send)
+ * and logs the verification event in Cloud Firestore + Local Storage for Admin audit.
+ * Never exposes or offers a web fallback OTP so fake numbers are rejected.
  */
 export async function sendWhatsAppOtpViaFonnte(
   rawPhone: string,
   displayName: string
 ): Promise<SendOtpResult> {
-  const normalizedPhone = normalizePhoneNumber(rawPhone);
-  const otpCode = generateSixDigitOtp();
+  const phoneCheck = isValidWhatsAppPhone(rawPhone);
+  const normalizedPhone = phoneCheck.normalized;
   const issuedAtMs = Date.now();
+
+  if (!phoneCheck.valid) {
+    return {
+      otpCode: '',
+      issuedAtMs,
+      normalizedPhone,
+      sentViaFonnte: false,
+      statusMessage:
+        phoneCheck.reason ||
+        'Nomor WhatsApp tidak valid. Gunakan nomor WhatsApp asli dan aktif.',
+    };
+  }
+
+  const otpCode = generateSixDigitOtp();
   const config = await loadFonnteConfig();
   const cleanName = displayName.trim() || 'Siswa Kelas 9';
 
@@ -346,21 +360,21 @@ export async function sendWhatsAppOtpViaFonnte(
 
       if (response.ok && resultJson && resultJson.status === true) {
         sentViaFonnte = true;
-        statusMessage = `Kode OTP berhasil dikirim ke WhatsApp ${normalizedPhone} via Bot Fonnte.`;
+        statusMessage = `Kode OTP 6 digit telah dikirimkan ke WhatsApp ${normalizedPhone} melalui Bot Fonnte. Silakan buka pesan WhatsApp di ponsel Anda.`;
       } else {
         const reason =
           resultJson?.reason ||
           resultJson?.detail ||
-          'Token Fonnte tidak aktif / kuota perangkat penuh';
-        statusMessage = `Respons Fonnte: ${reason}. OTP tidak terkirim — hubungi Admin untuk mengaktifkan Bot WhatsApp.`;
+          'Nomor tidak terdaftar di WhatsApp atau bot sedang sibuk';
+        statusMessage = `Pengiriman OTP ke WhatsApp ditolak (${reason}). Pastikan nomor WhatsApp Anda asli, aktif, dan terdaftar di WhatsApp.`;
       }
     } catch {
       statusMessage =
-        'Tidak dapat menghubungi server Fonnte saat ini. OTP tidak terkirim — hubungi Admin untuk mengaktifkan Bot WhatsApp.';
+        'Gagal menghubungi server Bot WhatsApp Fonnte. Pastikan koneksi internet Anda stabil dan gunakan nomor WhatsApp aktif.';
     }
   } else {
     statusMessage =
-      'Token Bot Fonnte belum diisi Admin. OTP tidak dapat dikirim — hubungi Admin untuk mengaktifkan Bot WhatsApp.';
+      'Token Bot WhatsApp Fonnte belum diaktifkan oleh Admin. Silakan hubungi Admin untuk mengaktifkan pengiriman OTP WhatsApp.';
   }
 
   const logEntry: OtpVerificationLog = {

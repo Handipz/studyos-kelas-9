@@ -459,14 +459,14 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Header + Offline Download Bar */}
-      <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-5 sm:p-6 space-y-5 print:hidden">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 print:hidden">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 sm:gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#2563EB] font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-mono uppercase tracking-wider text-[#2563EB] font-semibold">
+              <Sparkles className="w-3.5 h-3.5 shrink-0" />
               <span>ACTIVE RECALL PER BAB & KITAB RUMUS KELAS 9</span>
             </div>
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#0F172A] dark:text-[#F8FAFC] mt-1">
+            <h2 className="text-lg sm:text-2xl font-bold tracking-tight text-[#0F172A] dark:text-[#F8FAFC] mt-1">
               Belajar Cepat Per Mata Pelajaran & Per Bab
             </h2>
             <p className="text-xs sm:text-sm text-[#475569] dark:text-[#94A3B8] mt-0.5">
@@ -476,65 +476,68 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
           </div>
 
           {/* 3 Main Mode Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 bg-[#F8FAFC] dark:bg-[#090D16] p-1.5 rounded-xl border border-[#E2E8F0] dark:border-[#1E293B] self-start">
+          <div className="grid grid-cols-3 sm:flex items-center gap-1 sm:gap-1.5 bg-[#F8FAFC] dark:bg-[#090D16] p-1 sm:p-1.5 rounded-xl border border-[#E2E8F0] dark:border-[#1E293B] w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setSubTab('flashcards')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[40px] inline-flex items-center justify-center gap-1.5 px-2 sm:px-3.5 py-2 text-xs font-bold rounded-lg transition-colors truncate ${
                 subTab === 'flashcards'
                   ? 'bg-[#2563EB] text-white'
                   : 'text-[#475569] dark:text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-white'
               }`}
             >
-              <Brain className="w-4 h-4" />
-              <span>Flashcard Per Bab ({flashcards.length})</span>
+              <Brain className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden truncate">Kartu ({flashcards.length})</span>
+              <span className="hidden sm:inline">Flashcard Per Bab ({flashcards.length})</span>
             </button>
             <button
               type="button"
               onClick={() => setSubTab('formulas')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[40px] inline-flex items-center justify-center gap-1.5 px-2 sm:px-3.5 py-2 text-xs font-bold rounded-lg transition-colors truncate ${
                 subTab === 'formulas'
                   ? 'bg-[#2563EB] text-white'
                   : 'text-[#475569] dark:text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-white'
               }`}
             >
-              <BookOpen className="w-4 h-4" />
-              <span>Rumus Per Bab ({formulas.length})</span>
+              <BookOpen className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden truncate">Rumus ({formulas.length})</span>
+              <span className="hidden sm:inline">Rumus Per Bab ({formulas.length})</span>
             </button>
             <button
               type="button"
               onClick={() => setSubTab('mistakes')}
-              className={`inline-flex items-center gap-2 px-3.5 py-2 text-xs font-bold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[40px] inline-flex items-center justify-center gap-1.5 px-2 sm:px-3.5 py-2 text-xs font-bold rounded-lg transition-colors truncate ${
                 subTab === 'mistakes'
                   ? 'bg-[#2563EB] text-white'
                   : 'text-[#475569] dark:text-[#94A3B8] hover:text-[#0F172A] dark:hover:text-white'
               }`}
             >
-              <AlertOctagon className="w-4 h-4" />
-              <span>Catatan Salah Soal ({mistakes.length})</span>
+              <AlertOctagon className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden truncate">Log ({mistakes.length})</span>
+              <span className="hidden sm:inline">Catatan Salah Soal ({mistakes.length})</span>
             </button>
           </div>
         </div>
 
         {/* Summary Progress Strip + Multi-Format Offline Download Bar */}
-        <div className="pt-4 border-t border-[#E2E8F0] dark:border-[#1E293B] flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
-          <div className="flex flex-wrap items-center gap-3 text-xs">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-[#16A34A] font-semibold border border-emerald-200 dark:border-emerald-800/70">
-              <CheckCircle2 className="w-3.5 h-3.5" />
+        <div className="pt-3.5 sm:pt-4 border-t border-[#E2E8F0] dark:border-[#1E293B] flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3.5">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-[#16A34A] font-semibold border border-emerald-200 dark:border-emerald-800/70">
+              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
               <span>
-                Sudah Hafal: {totalMasteredCards} / {flashcards.length} Kartu
+                Hafal: {totalMasteredCards}/{flashcards.length} Kartu
               </span>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-[#D97706] font-semibold border border-amber-200 dark:border-amber-800/70">
-              <Brain className="w-3.5 h-3.5" />
-              <span>Perlu Diulang Hari Ini: {totalDueCards} Kartu</span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-[#D97706] font-semibold border border-amber-200 dark:border-amber-800/70">
+              <Brain className="w-3.5 h-3.5 shrink-0" />
+              <span>Jatuh Tempo: {totalDueCards} Kartu</span>
             </span>
-            <span className="text-[11px] font-mono text-[#475569] dark:text-[#94A3B8]">
+            <span className="text-[11px] font-mono text-[#475569] dark:text-[#94A3B8] hidden sm:inline">
               Copyright © 2026 Hanif
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full xl:w-auto">
             <button
               type="button"
               onClick={() =>
@@ -549,10 +552,11 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     : `Mapel ${getSubjectName(selectedSubjectId)}`
                 )
               }
-              className="min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg transition-colors truncate"
             >
-              <FileCode className="w-3.5 h-3.5" />
-              <span>Download Modul Interaktif (.html)</span>
+              <FileCode className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden truncate">Modul (.html)</span>
+              <span className="hidden sm:inline">Download Modul Interaktif (.html)</span>
             </button>
 
             <button
@@ -566,10 +570,11 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                   curriculum
                 )
               }
-              className="min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] hover:border-[#2563EB] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] hover:border-[#2563EB] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg transition-colors truncate"
             >
-              <Download className="w-3.5 h-3.5 text-[#16A34A]" />
-              <span>Download Ringkasan (.md)</span>
+              <Download className="w-3.5 h-3.5 text-[#16A34A] shrink-0" />
+              <span className="sm:hidden truncate">Ringkasan (.md)</span>
+              <span className="hidden sm:inline">Download Ringkasan (.md)</span>
             </button>
 
             <button
@@ -582,19 +587,20 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                   activeDeckCards.length > 0 ? activeDeckCards : flashcards
                 )
               }
-              className="min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] hover:border-[#2563EB] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] hover:border-[#2563EB] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg transition-colors truncate"
             >
-              <FileJson className="w-3.5 h-3.5 text-[#D97706]" />
-              <span>Download Paket (.json)</span>
+              <FileJson className="w-3.5 h-3.5 text-[#D97706] shrink-0" />
+              <span className="sm:hidden truncate">Paket (.json)</span>
+              <span className="hidden sm:inline">Download Paket (.json)</span>
             </button>
 
             <button
               type="button"
               onClick={handlePrintFormulas}
-              className="min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] hover:border-[#2563EB] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] hover:border-[#2563EB] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg transition-colors truncate"
             >
-              <Printer className="w-3.5 h-3.5 text-[#2563EB]" />
-              <span>Cetak / Simpan PDF</span>
+              <Printer className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
+              <span className="truncate">Cetak / PDF</span>
             </button>
           </div>
         </div>
@@ -602,40 +608,42 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
 
       {/* STEP 1 & STEP 2: PILIH MATA PELAJARAN -> PILIH PAKET BAB (Visible on Flashcards & Formulas tabs) */}
       {subTab !== 'mistakes' && (
-        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-5 sm:p-6 space-y-5 print:hidden">
+        <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 print:hidden">
           {/* Step 1: Subject Tabs + Semester Filter + Search */}
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
-            <div>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5">
+            <div className="w-full lg:w-auto">
               <span className="text-[11px] font-mono uppercase tracking-wider font-bold text-[#2563EB]">
                 LANGKAH 1 · PILIH MATA PELAJARAN
               </span>
-              <div className="flex flex-wrap items-center gap-2 mt-2">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-stretch sm:items-center gap-2 mt-2">
                 <button
                   type="button"
                   onClick={() => handleSelectSubject('ALL')}
-                  className={`px-3.5 py-2 rounded-lg text-xs font-bold border transition-colors ${
+                  className={`col-span-2 sm:col-span-1 min-h-[40px] px-3 py-2 rounded-lg text-xs font-bold border transition-colors text-left sm:text-center flex items-center justify-between sm:justify-center gap-1.5 ${
                     selectedSubjectId === 'ALL'
                       ? 'bg-[#2563EB] text-white border-[#2563EB]'
                       : 'bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB]'
                   }`}
                 >
-                  Semua Mapel ({flashcards.length} Kartu · {formulas.length}{' '}
-                  Rumus)
+                  <span>Semua Mapel</span>
+                  <span className="font-mono text-[11px] opacity-90">
+                    ({flashcards.length} Kartu · {formulas.length} Rumus)
+                  </span>
                 </button>
                 {subjectStats.map((st) => (
                   <button
                     key={st.id}
                     type="button"
                     onClick={() => handleSelectSubject(st.id)}
-                    className={`px-3.5 py-2 rounded-lg text-xs font-bold border transition-colors ${
+                    className={`min-h-[40px] px-3 py-2 rounded-lg text-xs font-bold border transition-colors text-left sm:text-center flex flex-col sm:flex-row sm:items-center justify-center ${
                       selectedSubjectId === st.id
                         ? 'bg-[#2563EB] text-white border-[#2563EB]'
                         : 'bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB]'
                     }`}
                   >
-                    <span>{st.name}</span>
+                    <span className="truncate">{st.name}</span>
                     <span
-                      className={`ml-1.5 font-mono text-[11px] ${
+                      className={`sm:ml-1.5 font-mono text-[10px] sm:text-[11px] ${
                         selectedSubjectId === st.id
                           ? 'text-blue-100'
                           : 'text-[#475569] dark:text-[#94A3B8]'
@@ -649,8 +657,8 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
             </div>
 
             {/* Semester & Search Controls */}
-            <div className="flex flex-wrap items-center gap-2 self-start lg:self-end">
-              <div className="inline-flex rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] p-1 border border-[#E2E8F0] dark:border-[#1E293B]">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto">
+              <div className="grid grid-cols-3 sm:inline-flex rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] p-1 border border-[#E2E8F0] dark:border-[#1E293B]">
                 {(['ALL', 1, 2] as const).map((semOpt) => (
                   <button
                     key={String(semOpt)}
@@ -660,7 +668,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       setSelectedChapterId('ALL');
                       setCurrentCardIndex(0);
                     }}
-                    className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
+                    className={`min-h-[34px] px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
                       selectedSemester === semOpt
                         ? 'bg-[#2563EB] text-white'
                         : 'text-[#475569] dark:text-[#94A3B8]'
@@ -671,7 +679,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                 ))}
               </div>
 
-              <div className="relative min-w-[210px]">
+              <div className="relative flex-1 sm:min-w-[210px]">
                 <Search className="w-3.5 h-3.5 text-[#475569] dark:text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="search"
@@ -681,7 +689,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     setCurrentCardIndex(0);
                   }}
                   placeholder="Cari bab, rumus, atau soal..."
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg text-[#0F172A] dark:text-[#F8FAFC] focus:outline-none focus:border-[#2563EB]"
+                  className="w-full min-h-[38px] pl-8 pr-3 py-1.5 text-xs bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg text-[#0F172A] dark:text-[#F8FAFC] focus:outline-none focus:border-[#2563EB]"
                 />
               </div>
             </div>
@@ -813,8 +821,8 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
       {subTab === 'flashcards' && (
         <div className="space-y-6">
           {/* Active Deck Action Bar */}
-          <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 flex flex-wrap items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <div>
                 <span className="text-[11px] font-mono uppercase tracking-wider font-bold text-[#2563EB]">
                   RUANG LATIHAN FLASHCARD AKTIF
@@ -828,7 +836,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                 </h3>
               </div>
 
-              <div className="inline-flex rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] p-1 border border-[#E2E8F0] dark:border-[#1E293B]">
+              <div className="grid grid-cols-2 sm:inline-flex rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] p-1 border border-[#E2E8F0] dark:border-[#1E293B]">
                 <button
                   type="button"
                   onClick={() => {
@@ -836,13 +844,13 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     setCurrentCardIndex(0);
                     setIsFlipped(false);
                   }}
-                  className={`px-3 py-1 text-xs font-semibold rounded-md ${
+                  className={`min-h-[34px] px-3 py-1 text-xs font-semibold rounded-md ${
                     fcFilterMode === 'ALL'
                       ? 'bg-[#2563EB] text-white'
                       : 'text-[#475569] dark:text-[#94A3B8]'
                   }`}
                 >
-                  Semua Kartu Bab ({activeDeckCards.length})
+                  Semua Kartu ({activeDeckCards.length})
                 </button>
                 <button
                   type="button"
@@ -851,7 +859,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     setCurrentCardIndex(0);
                     setIsFlipped(false);
                   }}
-                  className={`px-3 py-1 text-xs font-semibold rounded-md ${
+                  className={`min-h-[34px] px-3 py-1 text-xs font-semibold rounded-md ${
                     fcFilterMode === 'DUE'
                       ? 'bg-[#2563EB] text-white'
                       : 'text-[#475569] dark:text-[#94A3B8]'
@@ -865,7 +873,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
             <button
               type="button"
               onClick={() => setShowAddFcForm((v) => !v)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg whitespace-nowrap shrink-0"
+              className="w-full sm:w-auto min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg whitespace-nowrap shrink-0"
             >
               <Plus className="w-4 h-4" />
               <span>Tambah Kartu Flashcard</span>
@@ -876,7 +884,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
           {showAddFcForm && (
             <form
               onSubmit={handleCreateFlashcard}
-              className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-5 sm:p-6 space-y-4"
+              className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4"
             >
               <h3 className="text-sm font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                 Tambah Flashcard Baru ke Bab Tertentu
@@ -996,9 +1004,9 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
 
           {/* CLEAN FOCUS FLASHCARD PLAYER */}
           {activeCard ? (
-            <div className="bg-white dark:bg-[#111827] border-2 border-[#E2E8F0] dark:border-[#1E293B] rounded-2xl p-6 sm:p-8 max-w-3xl mx-auto space-y-6">
+            <div className="bg-white dark:bg-[#111827] border-2 border-[#E2E8F0] dark:border-[#1E293B] rounded-2xl p-4 sm:p-8 max-w-3xl mx-auto space-y-5 sm:space-y-6">
               {/* Card Metadata Header */}
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 sm:pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/50 text-[#2563EB] font-mono text-xs font-bold">
                     {getSubjectName(activeCard.subjectId)} · Sem{' '}
@@ -1030,20 +1038,20 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
               {/* Interactive Question / Answer Area */}
               <div
                 onClick={() => setIsFlipped((f) => !f)}
-                className="min-h-[200px] p-6 rounded-xl bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] flex flex-col justify-center cursor-pointer select-none transition-colors hover:border-[#2563EB]"
+                className="min-h-[180px] sm:min-h-[200px] p-4 sm:p-6 rounded-xl bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] flex flex-col justify-center cursor-pointer select-none transition-colors hover:border-[#2563EB]"
               >
                 <span
-                  className={`text-[11px] font-mono uppercase tracking-wider font-bold mb-2 ${
+                  className={`text-[10px] sm:text-[11px] font-mono uppercase tracking-wider font-bold mb-2 ${
                     isFlipped ? 'text-[#16A34A]' : 'text-[#2563EB]'
                   }`}
                 >
                   {isFlipped
-                    ? 'JAWABAN & KUNCI KONSEP (KLIK UNTUK KEMBALI KE SOAL)'
-                    : 'PERTANYAAN ACTIVE RECALL (KLIK KARTU UNTUK LIHAT JAWABAN)'}
+                    ? 'JAWABAN & KUNCI KONSEP (KETUK UNTUK KEMBALI KE SOAL)'
+                    : 'PERTANYAAN ACTIVE RECALL (KETUK KARTU UNTUK LIHAT JAWABAN)'}
                 </span>
 
                 {!isFlipped ? (
-                  <p className="text-base sm:text-xl font-bold text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
+                  <p className="text-sm sm:text-xl font-bold text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
                     {activeCard.front}
                   </p>
                 ) : (
@@ -1051,7 +1059,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     <p className="text-xs text-[#475569] dark:text-[#94A3B8]">
                       Soal: {activeCard.front}
                     </p>
-                    <div className="p-4 rounded-lg bg-white dark:bg-[#111827] border border-emerald-300 dark:border-emerald-800 text-sm sm:text-base font-mono font-semibold text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
+                    <div className="p-3.5 sm:p-4 rounded-lg bg-white dark:bg-[#111827] border border-emerald-300 dark:border-emerald-800 text-xs sm:text-base font-mono font-semibold text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
                       {activeCard.back}
                     </div>
                   </div>
@@ -1059,26 +1067,12 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
               </div>
 
               {/* Card Controls: Prev/Next + Flip + 3 Self-Evaluation Buttons */}
-              <div className="space-y-3 pt-2">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsFlipped(false);
-                      setCurrentCardIndex((idx) =>
-                        idx === 0 ? activeDeckCards.length - 1 : idx - 1
-                      );
-                    }}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] hover:border-[#2563EB]"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                    <span>Sebelumnya</span>
-                  </button>
-
+              <div className="space-y-3 pt-1">
+                <div className="grid grid-cols-2 sm:flex sm:items-center sm:justify-between gap-2">
                   <button
                     type="button"
                     onClick={() => setIsFlipped((f) => !f)}
-                    className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white"
+                    className="col-span-2 sm:order-2 min-h-[42px] inline-flex items-center justify-center gap-2 px-5 py-2 text-xs font-bold rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     <span>
@@ -1092,11 +1086,25 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     type="button"
                     onClick={() => {
                       setIsFlipped(false);
+                      setCurrentCardIndex((idx) =>
+                        idx === 0 ? activeDeckCards.length - 1 : idx - 1
+                      );
+                    }}
+                    className="sm:order-1 min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] hover:border-[#2563EB]"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <span>Sebelumnya</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsFlipped(false);
                       setCurrentCardIndex(
                         (idx) => (idx + 1) % activeDeckCards.length
                       );
                     }}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] hover:border-[#2563EB]"
+                    className="sm:order-3 min-h-[40px] inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] hover:border-[#2563EB]"
                   >
                     <span>Berikutnya</span>
                     <ChevronRight className="w-4 h-4" />
@@ -1104,25 +1112,25 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                 </div>
 
                 {/* Always-accessible Spaced Repetition Evaluation Bar */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-[#E2E8F0] dark:border-[#1E293B]">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-[#E2E8F0] dark:border-[#1E293B]">
                   <button
                     type="button"
                     onClick={() => handleEval('lupa')}
-                    className="py-2.5 px-4 text-xs font-bold rounded-lg border border-rose-300 dark:border-rose-800 bg-rose-50/70 dark:bg-rose-950/30 text-[#DC2626] hover:bg-[#DC2626] hover:text-white transition-colors"
+                    className="min-h-[42px] py-2.5 px-4 text-xs font-bold rounded-lg border border-rose-300 dark:border-rose-800 bg-rose-50/70 dark:bg-rose-950/30 text-[#DC2626] hover:bg-[#DC2626] hover:text-white transition-colors"
                   >
                     Lupa · Ulangi Hari Ini
                   </button>
                   <button
                     type="button"
                     onClick={() => handleEval('ragu')}
-                    className="py-2.5 px-4 text-xs font-bold rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/30 text-[#D97706] hover:bg-[#D97706] hover:text-white transition-colors"
+                    className="min-h-[42px] py-2.5 px-4 text-xs font-bold rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50/70 dark:bg-amber-950/30 text-[#D97706] hover:bg-[#D97706] hover:text-white transition-colors"
                   >
                     Ragu-ragu · Ulang Besok (+1 Hari)
                   </button>
                   <button
                     type="button"
                     onClick={() => handleEval('hafal')}
-                    className="py-2.5 px-4 text-xs font-bold rounded-lg border border-emerald-300 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-950/30 text-[#16A34A] hover:bg-[#16A34A] hover:text-white transition-colors"
+                    className="min-h-[42px] py-2.5 px-4 text-xs font-bold rounded-lg border border-emerald-300 dark:border-emerald-800 bg-emerald-50/70 dark:bg-emerald-950/30 text-[#16A34A] hover:bg-[#16A34A] hover:text-white transition-colors"
                   >
                     Sudah Hafal · Lanjut (+4 Hari)
                   </button>
@@ -1272,57 +1280,57 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
       {subTab === 'formulas' && (
         <div className="space-y-6">
           {/* Top Formula Mode Switcher */}
-          <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 print:hidden">
-            <div className="flex flex-wrap items-center gap-1.5 bg-[#F8FAFC] dark:bg-[#090D16] p-1 rounded-lg border border-[#E2E8F0] dark:border-[#1E293B]">
+          <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 print:hidden">
+            <div className="grid grid-cols-1 sm:flex items-center gap-1.5 bg-[#F8FAFC] dark:bg-[#090D16] p-1 rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setFormulaViewMode('table')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
+                className={`min-h-[36px] inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
                   formulaViewMode === 'table'
                     ? 'bg-[#2563EB] text-white'
                     : 'text-[#475569] dark:text-[#94A3B8]'
                 }`}
               >
-                <Table2 className="w-3.5 h-3.5" />
-                <span>Tabel Rumus Per Bab ({totalFilteredFormulas})</span>
+                <Table2 className="w-3.5 h-3.5 shrink-0" />
+                <span>Daftar & Tabel Rumus ({totalFilteredFormulas})</span>
               </button>
               <button
                 type="button"
                 onClick={() => setFormulaViewMode('calculator')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
+                className={`min-h-[36px] inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
                   formulaViewMode === 'calculator'
                     ? 'bg-[#2563EB] text-white'
                     : 'text-[#475569] dark:text-[#94A3B8]'
                 }`}
               >
-                <Calculator className="w-3.5 h-3.5" />
+                <Calculator className="w-3.5 h-3.5 shrink-0" />
                 <span>Kalkulator Rumus Cepat</span>
               </button>
               <button
                 type="button"
                 onClick={() => setFormulaViewMode('cheatsheet')}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
+                className={`min-h-[36px] inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-colors ${
                   formulaViewMode === 'cheatsheet'
                     ? 'bg-[#2563EB] text-white'
                     : 'text-[#475569] dark:text-[#94A3B8]'
                 }`}
               >
-                <FileText className="w-3.5 h-3.5" />
-                <span>Lembar Cheat-Sheet 1 Halaman</span>
+                <FileText className="w-3.5 h-3.5 shrink-0" />
+                <span>Cheat-Sheet 1 Halaman</span>
               </button>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setFormulaPinnedOnly((p) => !p)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors ${
+                className={`min-h-[38px] inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors ${
                   formulaPinnedOnly
                     ? 'bg-[#2563EB] text-white border-[#2563EB]'
                     : 'bg-[#F8FAFC] dark:bg-[#090D16] text-[#475569] dark:text-[#94A3B8] border-[#E2E8F0] dark:border-[#1E293B]'
                 }`}
               >
-                <Pin className="w-3.5 h-3.5" />
+                <Pin className="w-3.5 h-3.5 shrink-0" />
                 <span>
                   {formulaPinnedOnly ? 'Hanya Di-Pin' : 'Filter Di-Pin'}
                 </span>
@@ -1331,9 +1339,9 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
               <button
                 type="button"
                 onClick={() => setShowAddFormulaForm((v) => !v)}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg"
+                className="min-h-[38px] inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5 shrink-0" />
                 <span>Tambah Rumus</span>
               </button>
             </div>
@@ -1343,7 +1351,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
           {showAddFormulaForm && (
             <form
               onSubmit={handleCreateFormula}
-              className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-6 space-y-4"
+              className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4"
             >
               <h3 className="text-sm font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                 Tambah Kartu Rumus Baru (Format Baris-per-Baris: Apa yang Dicari
@@ -1488,11 +1496,11 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
             </form>
           )}
 
-          {/* VIEW MODE 1: STRUCTURED PER-CHAPTER TABLE LAYOUT */}
+          {/* VIEW MODE 1: STRUCTURED PER-CHAPTER CARDS (MOBILE) + TABLE (DESKTOP) */}
           {formulaViewMode === 'table' && (
             <div className="space-y-6">
               {groupedFormulaChapters.length === 0 ? (
-                <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-10 text-center space-y-2">
+                <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-8 sm:p-10 text-center space-y-2">
                   <p className="text-sm font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                     Tidak ada rumus yang cocok dengan filter ini.
                   </p>
@@ -1503,28 +1511,148 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     key={`${group.subjectId}-${group.chapterId}`}
                     className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl overflow-hidden"
                   >
-                    <div className="px-5 py-3.5 bg-[#F8FAFC] dark:bg-[#090D16] border-b border-[#E2E8F0] dark:border-[#1E293B] flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-xs font-mono font-bold text-[#2563EB] uppercase">
+                    <div className="px-4 sm:px-5 py-3.5 bg-[#F8FAFC] dark:bg-[#090D16] border-b border-[#E2E8F0] dark:border-[#1E293B] flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                        <span className="text-[11px] sm:text-xs font-mono font-bold text-[#2563EB] uppercase">
                           SEMESTER {group.semester} · {group.subjectShortCode}
                         </span>
                         <span
-                          className="text-xs text-[#475569] dark:text-[#94A3B8]"
+                          className="text-xs text-[#475569] dark:text-[#94A3B8] hidden sm:inline"
                           aria-hidden="true"
                         >
                           —
                         </span>
-                        <h4 className="text-sm font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+                        <h4 className="text-xs sm:text-sm font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                           {group.subjectName}: Bab {group.chapterNumber} —{' '}
                           {group.chapterTitle}
                         </h4>
                       </div>
-                      <span className="text-xs font-mono text-[#475569] dark:text-[#94A3B8]">
+                      <span className="text-[11px] sm:text-xs font-mono text-[#475569] dark:text-[#94A3B8]">
                         {group.formulas.length} Topik Rumus
                       </span>
                     </div>
 
-                    <div className="overflow-x-auto">
+                    {/* MOBILE STACKED FORMULA CARDS (< 768px) — Zero horizontal overflow! */}
+                    <div className="md:hidden divide-y divide-[#E2E8F0] dark:divide-[#1E293B]">
+                      {group.formulas.map((item) => {
+                        const isCopied = copiedFormulaId === item.id;
+                        const subItems = resolveSubFormulas(item);
+                        return (
+                          <div key={`mob-${item.id}`} className="p-4 space-y-3 text-xs">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <div className="font-bold text-sm text-[#0F172A] dark:text-[#F8FAFC]">
+                                  {item.title} :
+                                </div>
+                                <div className="text-[11px] text-[#475569] dark:text-[#94A3B8] font-mono mt-0.5">
+                                  Sem {item.semester} · Bab {group.chapterNumber} · {subItems.length} Rumus
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopyFormula(item)}
+                                  className="px-2.5 py-1.5 text-[11px] font-semibold rounded-md border border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] inline-flex items-center gap-1"
+                                >
+                                  {isCopied ? (
+                                    <>
+                                      <Check className="w-3 h-3 text-[#16A34A]" />
+                                      <span className="text-[#16A34A]">Disalin</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="w-3 h-3 text-[#2563EB]" />
+                                      <span>Salin</span>
+                                    </>
+                                  )}
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => onTogglePinFormula(item)}
+                                  className={`px-2.5 py-1.5 text-[11px] font-semibold rounded-md border inline-flex items-center gap-1 ${
+                                    item.isPinned
+                                      ? 'bg-[#2563EB] text-white border-[#2563EB]'
+                                      : 'bg-[#F8FAFC] dark:bg-[#090D16] text-[#475569] dark:text-[#94A3B8] border-[#E2E8F0] dark:border-[#1E293B]'
+                                  }`}
+                                >
+                                  <Pin className="w-3 h-3" />
+                                  <span>{item.isPinned ? 'Pinned' : 'Pin'}</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => onDeleteFormula(item.id)}
+                                  aria-label={`Hapus rumus ${item.title}`}
+                                  className="p-1.5 text-[#475569] hover:text-[#DC2626]"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Sub-Formulas Box */}
+                            <div className="rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] divide-y divide-[#E2E8F0] dark:divide-[#1E293B]">
+                              {subItems.map((sf, idx) => (
+                                <div
+                                  key={`${item.id}-mobsf-${idx}`}
+                                  className="px-3 py-2 flex flex-col gap-0.5"
+                                >
+                                  <span className="text-[11px] font-semibold text-[#475569] dark:text-[#94A3B8]">
+                                    {sf.target} :
+                                  </span>
+                                  <span className="font-mono text-xs font-bold text-[#2563EB] dark:text-blue-400 break-words">
+                                    {sf.expr}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Variables */}
+                            <div className="text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
+                              <span className="font-semibold text-[#475569] dark:text-[#94A3B8]">
+                                Variabel:{' '}
+                              </span>
+                              {item.variables}
+                            </div>
+
+                            {/* Steps */}
+                            {item.steps && (
+                              <div className="p-2.5 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] text-[11px] text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
+                                <div className="flex items-center gap-1 font-bold text-[#2563EB] mb-0.5">
+                                  <ListChecks className="w-3.5 h-3.5 shrink-0" />
+                                  <span>Langkah Penyelesaian:</span>
+                                </div>
+                                <div>{item.steps}</div>
+                              </div>
+                            )}
+
+                            {/* Example */}
+                            {item.example && (
+                              <div className="font-mono text-[11px] text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed bg-[#F8FAFC] dark:bg-[#090D16] p-2.5 rounded-lg border border-[#E2E8F0] dark:border-[#1E293B]">
+                                <span className="font-sans font-bold text-[#16A34A]">
+                                  Contoh:{' '}
+                                </span>
+                                {item.example}
+                              </div>
+                            )}
+
+                            {/* Exam Tip */}
+                            {item.examTip && (
+                              <div className="p-2.5 rounded-lg bg-amber-50/70 dark:bg-amber-950/30 border border-amber-300/80 dark:border-amber-800/70 text-[11px] text-[#0F172A] dark:text-[#F8FAFC] leading-relaxed">
+                                <div className="flex items-center gap-1 font-bold text-[#D97706] mb-0.5">
+                                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                                  <span>Tips Jebakan Ujian:</span>
+                                </div>
+                                <div>{item.examTip}</div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* DESKTOP 5-COLUMN FORMULA TABLE (>= 768px) */}
+                    <div className="hidden md:block overflow-x-auto">
                       <table className="w-full text-left border-collapse">
                         <thead>
                           <tr className="border-b border-[#E2E8F0] dark:border-[#1E293B] text-[11px] font-semibold text-[#475569] dark:text-[#94A3B8] bg-white dark:bg-[#111827]">
@@ -1681,9 +1809,9 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
 
           {/* VIEW MODE 2: INTERACTIVE QUICK FORMULA CALCULATOR */}
           {formulaViewMode === 'calculator' && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
               {/* Calculator 1: Quadratic Equation */}
-              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-6 space-y-4">
+              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4">
                 <div className="border-b border-[#E2E8F0] dark:border-[#1E293B] pb-3">
                   <span className="text-[11px] font-mono font-bold text-[#2563EB]">
                     MATEMATIKA SEM 1 · BAB 2
@@ -1692,7 +1820,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     1. Kalkulator Persamaan & Fungsi Kuadrat (ax² + bx + c = 0)
                   </h4>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <label className="block text-xs font-mono font-semibold mb-1">
                       Koefisien a
@@ -1730,8 +1858,8 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     />
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
-                  <div className="flex items-center justify-between">
+                <div className="p-3.5 sm:p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Diskriminan (D = b² - 4ac):
                     </span>
@@ -1739,17 +1867,17 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       {quadCalcResult.discriminant}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Akar x₁ dan x₂:
                     </span>
                     <span className="font-bold text-[#16A34A]">
                       {quadCalcResult.x1 !== null
-                        ? `x₁ = ${quadCalcResult.x1}  |  x₂ = ${quadCalcResult.x2}`
+                        ? `x₁ = ${quadCalcResult.x1} | x₂ = ${quadCalcResult.x2}`
                         : 'Imajiner (D < 0)'}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Titik Puncak (xp, yp):
                     </span>
@@ -1761,7 +1889,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
               </div>
 
               {/* Calculator 2: Curved 3D Solids */}
-              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-6 space-y-4">
+              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4">
                 <div className="border-b border-[#E2E8F0] dark:border-[#1E293B] pb-3">
                   <span className="text-[11px] font-mono font-bold text-[#2563EB]">
                     MATEMATIKA SEM 2 · BAB 2
@@ -1771,7 +1899,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     Bola)
                   </h4>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <label className="block text-xs font-semibold mb-1">
                       Bangun Ruang
@@ -1816,9 +1944,9 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     />
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
+                <div className="p-3.5 sm:p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
                   {solidShape === 'kerucut' && (
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <span className="text-[#475569] dark:text-[#94A3B8]">
                         Garis Pelukis (s = √(r²+t²)):
                       </span>
@@ -1827,7 +1955,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       </span>
                     </div>
                   )}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Luas Selimut:
                     </span>
@@ -1835,7 +1963,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       {solidCalcResult.curvedArea} cm²
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Luas Permukaan Utuh:
                     </span>
@@ -1843,7 +1971,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       {solidCalcResult.fullSurfaceArea} cm²
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Volume (V):
                     </span>
@@ -1855,7 +1983,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
               </div>
 
               {/* Calculator 3: Coulomb's Law */}
-              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-6 space-y-4">
+              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4">
                 <div className="border-b border-[#E2E8F0] dark:border-[#1E293B] pb-3">
                   <span className="text-[11px] font-mono font-bold text-[#2563EB]">
                     FISIKA IPA SEM 1 · BAB 4
@@ -1865,7 +1993,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     r²)
                   </h4>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <label className="block text-xs font-mono font-semibold mb-1">
                       Muatan q₁ (μC)
@@ -1904,8 +2032,8 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     />
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
-                  <div className="flex items-center justify-between">
+                <div className="p-3.5 sm:p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Gaya Coulomb (F):
                     </span>
@@ -1913,14 +2041,14 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       {coulombCalcResult.forceNewton} Newton
                     </span>
                   </div>
-                  <div className="pt-2 border-t border-[#E2E8F0] dark:border-[#1E293B] text-[11px] text-[#475569] dark:text-[#94A3B8]">
+                  <div className="pt-2 border-t border-[#E2E8F0] dark:border-[#1E293B] text-[11px] text-[#475569] dark:text-[#94A3B8] break-words">
                     {coulombCalcResult.steps}
                   </div>
                 </div>
               </div>
 
               {/* Calculator 4: Ohm's Law & Electrical Energy */}
-              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-6 space-y-4">
+              <div className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4">
                 <div className="border-b border-[#E2E8F0] dark:border-[#1E293B] pb-3">
                   <span className="text-[11px] font-mono font-bold text-[#2563EB]">
                     FISIKA IPA SEM 1 · BAB 5
@@ -1929,7 +2057,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     4. Kalkulator Hukum Ohm, Daya (Watt), dan Energi Listrik
                   </h4>
                 </div>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   <div>
                     <label className="block text-xs font-mono font-semibold mb-1">
                       Tegangan V (Volt)
@@ -1969,8 +2097,8 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                     />
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
-                  <div className="flex items-center justify-between">
+                <div className="p-3.5 sm:p-4 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] space-y-2 font-mono text-xs">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Kuat Arus (I = V / R):
                     </span>
@@ -1978,7 +2106,7 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       {ohmCalcResult.currentAmpere} Ampere
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Daya Listrik (P = V · I):
                     </span>
@@ -1986,12 +2114,12 @@ export const ActiveRecallView: React.FC<ActiveRecallViewProps> = ({
                       {ohmCalcResult.powerWatt} Watt
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="text-[#475569] dark:text-[#94A3B8]">
                       Energi Listrik (W = P · t):
                     </span>
                     <span className="font-bold text-[#16A34A]">
-                      {ohmCalcResult.energyJoule.toLocaleString('id-ID')} Joule
+                      {ohmCalcResult.energyJoule.toLocaleString('id-ID')} J
                       ({ohmCalcResult.energyKwh} kWh)
                     </span>
                   </div>

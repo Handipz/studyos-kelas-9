@@ -14,10 +14,15 @@ import {
   calculateQuadraticFormula,
   calculateSubjectGradeSimulation,
   calculateTaskProgress,
+  computeSessionIntegritySignature,
   evaluateFlashcardReview,
+  evaluateLoginLockout,
+  evaluateOtpRateLimit,
   getChapterRecencyInfo,
   groupFlashcardsByChapterDeck,
   groupFormulasByChapter,
+  isOtpExpired,
+  isValidWhatsAppPhone,
   normalizePhoneNumber,
   parseFormulaTextToSubItems,
   resolveSubFormulas,
@@ -375,6 +380,11 @@ test('normalizePhoneNumber and validateAdminCredentials handle student phones an
   assert.equal(validateAdminCredentials('admin', 'admin123'), true);
   assert.equal(validateAdminCredentials('admin', 'wrongpass'), false);
   assert.equal(validateAdminCredentials('siswa', 'admin 123'), false);
+
+  // Strict WhatsApp phone validation (rejects fake sequential/repeated numbers)
+  assert.equal(isValidWhatsAppPhone('081234567890').valid, false);
+  assert.equal(isValidWhatsAppPhone('081111111111').valid, false);
+  assert.equal(isValidWhatsAppPhone('085156987311').valid, true);
 });
 
 test('New user default workspace is clean (zero dummy personal items) and pre-populated with deep Rumus & Active Recall + Copyright © Hanif', () => {

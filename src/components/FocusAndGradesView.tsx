@@ -200,14 +200,14 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
     curriculum.find((s) => s.id === subjectId)?.name || subjectId;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Top Section: Focus Studio (Deep Work Timer + Web Audio API White Noise) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
         {/* Left 7 Cols: Deep Work & Pomodoro Timer */}
-        <section className="lg:col-span-7 bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6 space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+        <section className="lg:col-span-7 bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-5 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
             <div>
-              <h2 className="text-lg font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+              <h2 className="text-base sm:text-lg font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                 Focus Studio — Deep Work & Pomodoro Timer
               </h2>
               <p className="text-xs text-[#475569] dark:text-[#94A3B8] mt-0.5">
@@ -215,13 +215,13 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
               </p>
             </div>
 
-            <div className="flex items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg">
+            <div className="grid grid-cols-2 sm:flex items-center gap-1 p-1 bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg w-full sm:w-auto">
               {(['Pomodoro 25/5', 'Deep Work 50/10'] as const).map((m) => (
                 <button
                   key={m}
                   type="button"
                   onClick={() => switchTimerMode(m)}
-                  className={`px-3 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap shrink-0 ${
+                  className={`min-h-[36px] px-3 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap shrink-0 ${
                     timerMode === m
                       ? 'bg-[#2563EB] text-white'
                       : 'text-[#475569] dark:text-[#94A3B8]'
@@ -258,7 +258,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                   const subj = curriculum.find((s) => s.id === id);
                   setSelectedChapterId(subj?.chapters[0]?.id || '');
                 }}
-                className="w-full px-3 py-2 text-xs bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-md text-[#0F172A] dark:text-[#F8FAFC]"
+                className="w-full min-h-[40px] px-3 py-2 text-xs bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg text-[#0F172A] dark:text-[#F8FAFC]"
               >
                 {curriculum.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -279,7 +279,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                 id="focus-chap-select"
                 value={selectedChapterId}
                 onChange={(e) => setSelectedChapterId(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-md text-[#0F172A] dark:text-[#F8FAFC]"
+                className="w-full min-h-[40px] px-3 py-2 text-xs bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg text-[#0F172A] dark:text-[#F8FAFC]"
               >
                 {focusChapters.map((ch) => (
                   <option key={ch.id} value={ch.id}>
@@ -291,23 +291,23 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
           </div>
 
           {/* Digital Clock Readout */}
-          <div className="py-8 px-6 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] text-center space-y-4">
+          <div className="py-6 sm:py-8 px-4 sm:px-6 rounded-xl bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] text-center space-y-4">
             <div className="text-xs font-mono font-semibold text-[#2563EB]">
               {phase === 'FOCUS' ? 'SESI FOKUS BELAJAR' : 'SESI ISTIRAHAT OTAK'} · {timerMode}
             </div>
 
             <div
               data-testid="focus-timer-display"
-              className="text-5xl sm:text-6xl font-bold font-mono tabular-nums tracking-tight text-[#0F172A] dark:text-[#F8FAFC]"
+              className="text-4xl sm:text-6xl font-bold font-mono tabular-nums tracking-tight text-[#0F172A] dark:text-[#F8FAFC]"
             >
               {formattedTime}
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => setIsRunning((r) => !r)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg"
+                className="min-h-[42px] inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 text-xs font-semibold text-white bg-[#2563EB] hover:bg-blue-700 rounded-lg"
               >
                 {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                 <span>{isRunning ? 'Jeda Timer' : 'Mulai Fokus'}</span>
@@ -316,7 +316,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
               <button
                 type="button"
                 onClick={resetTimer}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC] bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg"
+                className="min-h-[42px] inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC] bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -325,7 +325,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
               <button
                 type="button"
                 onClick={handleCompleteFocusSession}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-white bg-[#16A34A] hover:bg-emerald-700 rounded-lg"
+                className="col-span-2 sm:col-span-1 min-h-[42px] inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-white bg-[#16A34A] hover:bg-emerald-700 rounded-lg"
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>Selesaikan & Catat Jam Belajar</span>
@@ -335,20 +335,20 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
         </section>
 
         {/* Right 5 Cols: Web Audio API Synthesizer + Study Hours Breakdown */}
-        <div className="lg:col-span-5 space-y-6">
-          <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+        <div className="lg:col-span-5 space-y-5 sm:space-y-6">
+          <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#E2E8F0] dark:border-[#1E293B]">
               <div className="flex items-center gap-2">
                 {soundType === 'off' ? (
-                  <VolumeX className="w-4 h-4 text-[#475569]" />
+                  <VolumeX className="w-4 h-4 text-[#475569] shrink-0" />
                 ) : (
-                  <Volume2 className="w-4 h-4 text-[#2563EB] animate-pulse" />
+                  <Volume2 className="w-4 h-4 text-[#2563EB] animate-pulse shrink-0" />
                 )}
-                <h3 className="text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+                <h3 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                   Web Audio Suara Penenang & Fokus
                 </h3>
               </div>
-              <span className="text-xs font-mono text-[#16A34A]">
+              <span className="text-[11px] font-mono text-[#16A34A]">
                 9 Suara · 100% Offline
               </span>
             </div>
@@ -365,9 +365,9 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                 AMBIENT_SOUNDS_CATALOG.find((s) => s.id === soundType) ||
                 AMBIENT_SOUNDS_CATALOG[0];
               return (
-                <div className="p-3 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] flex items-start justify-between gap-3">
+                <div className="p-3 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                   <div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-1.5">
                       <span className="text-xs font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                         {activeMeta.label}
                       </span>
@@ -387,7 +387,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
             })()}
 
             {/* Soundscape Selector Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {AMBIENT_SOUNDS_CATALOG.map((item) => {
                 const isSelected = soundType === item.id;
                 const isOffBtn = item.id === 'off';
@@ -396,7 +396,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                     key={item.id}
                     type="button"
                     onClick={() => handleAmbientSoundChange(item.id)}
-                    className={`p-2.5 text-left rounded-lg border transition-colors flex flex-col justify-between ${
+                    className={`min-h-[48px] p-2.5 text-left rounded-lg border transition-colors flex flex-col justify-between ${
                       isSelected
                         ? isOffBtn
                           ? 'bg-[#0F172A] text-white dark:bg-white dark:text-[#0F172A] border-transparent'
@@ -404,12 +404,12 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                         : 'bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB]'
                     }`}
                   >
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="text-xs font-bold leading-snug">
+                    <div className="flex items-center justify-between gap-1.5">
+                      <span className="text-xs font-bold leading-snug truncate">
                         {item.label}
                       </span>
                       <span
-                        className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded ${
+                        className={`text-[9px] font-mono uppercase px-1.5 py-0.5 rounded shrink-0 ${
                           isSelected
                             ? 'bg-white/20 text-current'
                             : 'bg-white dark:bg-[#111827] text-[#475569] dark:text-[#94A3B8]'
@@ -464,7 +464,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
           </section>
 
           {/* Statistik Jam Belajar per Mapel */}
-          <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6 space-y-3">
+          <section className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b border-[#E2E8F0] dark:border-[#1E293B]">
               <Clock className="w-4 h-4 text-[#16A34A]" />
               <h3 className="text-sm font-bold text-[#0F172A] dark:text-[#F8FAFC]">
@@ -490,13 +490,13 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
       {/* Bottom Section: Grade Tracker & Simulasi Target Rapor */}
       <section
         aria-label="Grade Tracker & Simulasi Target Rapor"
-        className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg p-6 space-y-6"
+        className="bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl p-4 sm:p-6 space-y-5 sm:space-y-6"
       >
-        <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
-          <div className="flex items-center gap-2.5">
-            <Calculator className="w-5 h-5 text-[#2563EB]" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 pb-4 border-b border-[#E2E8F0] dark:border-[#1E293B]">
+          <div className="flex items-start sm:items-center gap-2.5">
+            <Calculator className="w-5 h-5 text-[#2563EB] shrink-0 mt-0.5 sm:mt-0" />
             <div>
-              <h2 className="text-lg font-bold text-[#0F172A] dark:text-[#F8FAFC]">
+              <h2 className="text-base sm:text-lg font-bold text-[#0F172A] dark:text-[#F8FAFC]">
                 Grade Tracker & Kalkulator Simulasi Target Rapor
               </h2>
               <p className="text-xs text-[#475569] dark:text-[#94A3B8]">
@@ -505,8 +505,8 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div>
+          <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+            <div className="flex-1 sm:flex-initial">
               <label htmlFor="grade-subject-select" className="sr-only">
                 Pilih Mata Pelajaran
               </label>
@@ -514,7 +514,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                 id="grade-subject-select"
                 value={gradeSubjectId}
                 onChange={(e) => setGradeSubjectId(e.target.value)}
-                className="px-3.5 py-2 text-xs font-semibold bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-md text-[#0F172A] dark:text-[#F8FAFC]"
+                className="w-full min-h-[38px] px-3 py-2 text-xs font-semibold bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] rounded-lg text-[#0F172A] dark:text-[#F8FAFC]"
               >
                 {curriculum.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -524,13 +524,13 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
               </select>
             </div>
 
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B]">
-              <Target className="w-4 h-4 text-[#2563EB]" />
+            <div className="min-h-[38px] flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B]">
+              <Target className="w-4 h-4 text-[#2563EB] shrink-0" />
               <label
                 htmlFor="target-rapor-input"
-                className="text-xs font-medium text-[#475569] dark:text-[#94A3B8]"
+                className="text-xs font-medium text-[#475569] dark:text-[#94A3B8] whitespace-nowrap"
               >
-                Target Rapor:
+                Target:
               </label>
               <input
                 id="target-rapor-input"
@@ -541,7 +541,7 @@ export const FocusAndGradesView: React.FC<FocusAndGradesViewProps> = ({
                 onChange={(e) =>
                   onUpdateTargetGrade(gradeSubjectId, Number(e.target.value) || 90)
                 }
-                className="w-16 px-2 py-0.5 text-xs font-mono font-bold bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded text-[#2563EB]"
+                className="w-14 px-2 py-0.5 text-xs font-mono font-bold bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded text-[#2563EB]"
               />
             </div>
           </div>

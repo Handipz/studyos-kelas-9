@@ -912,9 +912,9 @@ export default function App() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 md:pl-64 flex flex-col min-w-0 pb-16 md:pb-0">
-        {/* Top Bar Contract (3 Zones separated by gap-4 sm:gap-8) */}
-        <header className="h-16 bg-white dark:bg-[#111827] border-b border-[#E2E8F0] dark:border-[#1E293B] px-3 sm:px-8 flex items-center justify-between gap-3 sm:gap-8 sticky top-0 z-20">
+      <div className="flex-1 md:pl-64 flex flex-col min-w-0 pb-20 md:pb-0 max-w-full overflow-x-hidden">
+        {/* Top Bar Contract (3 Zones separated by gap-2 sm:gap-8) */}
+        <header className="h-14 md:h-16 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md border-b border-[#E2E8F0] dark:border-[#1E293B] px-3 sm:px-8 flex items-center justify-between gap-2 sm:gap-8 sticky top-0 z-20">
           {/* Zone 1: Single text element wordmark */}
           <a
             href="#workspace"
@@ -1003,23 +1003,23 @@ export default function App() {
           </nav>
 
           {/* Zone 3: PWA Install + Login / Cloud Account + Theme Action */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <PWAInstallButton />
 
             <button
               type="button"
               onClick={() => setIsAuthModalOpen(true)}
-              className={`min-h-[38px] inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[38px] inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors whitespace-nowrap shrink-0 ${
                 userSession
                   ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800 hover:border-[#16A34A]'
                   : 'bg-[#2563EB] text-white border-[#2563EB] hover:bg-blue-700'
               }`}
             >
               <Smartphone className="w-3.5 h-3.5 shrink-0" />
-              <span>
+              <span className="max-w-[96px] sm:max-w-[140px] truncate">
                 {userSession
-                  ? `${userSession.displayName.slice(0, 14)}`
-                  : 'Login No HP / OTP'}
+                  ? userSession.displayName
+                  : 'Login OTP'}
               </span>
             </button>
 
@@ -1027,7 +1027,7 @@ export default function App() {
               type="button"
               onClick={() => setIsDark((d) => !d)}
               aria-label={isDark ? 'Aktifkan Light Mode' : 'Aktifkan Dark Mode'}
-              className="min-h-[38px] inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB] rounded-lg transition-colors whitespace-nowrap shrink-0"
+              className="min-h-[38px] min-w-[38px] inline-flex items-center justify-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC] bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] hover:border-[#2563EB] rounded-lg transition-colors whitespace-nowrap shrink-0"
             >
               {isDark ? (
                 <>
@@ -1044,8 +1044,8 @@ export default function App() {
           </div>
         </header>
 
-        {/* Sub-header Cloud Sync & Persistence Assurance Bar on Mobile/Tablet */}
-        <div className="bg-[#F8FAFC] dark:bg-[#090D16] border-b border-[#E2E8F0] dark:border-[#1E293B] px-3 sm:px-8 py-2 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#475569] dark:text-[#94A3B8]">
+        {/* Sub-header Cloud Sync & Persistence Assurance Bar (Hidden on mobile <640px to keep viewport open, shown on sm+) */}
+        <div className="hidden sm:flex bg-[#F8FAFC] dark:bg-[#090D16] border-b border-[#E2E8F0] dark:border-[#1E293B] px-4 sm:px-8 py-2 flex-wrap items-center justify-between gap-2 text-[11px] text-[#475569] dark:text-[#94A3B8]">
           <div className="flex items-center gap-2">
             <CloudCheck className="w-3.5 h-3.5 text-[#16A34A] shrink-0" />
             <span>
@@ -1081,7 +1081,7 @@ export default function App() {
         {/* Active Module Viewport */}
         <main
           id="workspace"
-          className="flex-1 p-3 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto"
+          className="flex-1 p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto overflow-x-hidden"
         >
           {activeTab === 'dashboard' && (
             <CommandCenterView
@@ -1170,12 +1170,12 @@ export default function App() {
         </main>
 
         {/* Global Web Footer with Copyright © Hanif */}
-        <footer className="mt-auto border-t border-[#E2E8F0] dark:border-[#1E293B] bg-white dark:bg-[#111827] px-4 sm:px-8 py-4 text-xs text-[#475569] dark:text-[#94A3B8] flex flex-col sm:flex-row items-center justify-between gap-2 print:hidden">
+        <footer className="mt-auto border-t border-[#E2E8F0] dark:border-[#1E293B] bg-white dark:bg-[#111827] px-4 sm:px-8 py-4 text-xs text-[#475569] dark:text-[#94A3B8] flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left print:hidden">
           <div className="font-semibold text-[#0F172A] dark:text-[#F8FAFC]">
             Copyright © 2026 Hanif — StudyOS Kelas 9 SMP (Semester 1 & 2)
           </div>
           <div className="font-mono text-[11px] text-center sm:text-right">
-            Rumus Terstruktur · Active Recall · Cloud & Offline PWA · Seluruh Hak Cipta Dilindungi
+            Rumus Terstruktur · Active Recall · Cloud & Offline PWA
           </div>
         </footer>
       </div>
@@ -1183,7 +1183,7 @@ export default function App() {
       {/* Mobile Bottom Navigation Bar (< 768px, height 56px <= 15% viewport cap) */}
       <nav
         aria-label="Navigasi Mobile Bawah"
-        className={`md:hidden fixed bottom-0 inset-x-0 h-14 bg-white dark:bg-[#111827] border-t border-[#E2E8F0] dark:border-[#1E293B] grid ${
+        className={`md:hidden fixed bottom-0 inset-x-0 h-14 bg-white/95 dark:bg-[#111827]/95 backdrop-blur-md border-t border-[#E2E8F0] dark:border-[#1E293B] grid ${
           navItems.length === 6 ? 'grid-cols-6' : 'grid-cols-5'
         } z-30`}
       >
@@ -1195,14 +1195,16 @@ export default function App() {
               key={item.id}
               type="button"
               onClick={() => setActiveTab(item.id)}
-              className={`flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors whitespace-nowrap shrink-0 ${
+              className={`min-h-[44px] px-0.5 flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors truncate ${
                 isActive
-                  ? 'text-[#2563EB]'
+                  ? 'text-[#2563EB] bg-blue-50/60 dark:bg-blue-950/30'
                   : 'text-[#475569] dark:text-[#94A3B8]'
               }`}
             >
-              <Icon className="w-4 h-4" />
-              <span>{item.shortLabel}</span>
+              <Icon className="w-4 h-4 shrink-0" />
+              <span className="truncate max-w-full leading-tight">
+                {item.shortLabel}
+              </span>
             </button>
           );
         })}

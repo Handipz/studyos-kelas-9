@@ -23,6 +23,7 @@ import {
 import { UserSession } from '../types/study';
 import {
   isOtpExpired,
+  isValidWhatsAppPhone,
   normalizePhoneNumber,
   validateAdminCredentials,
 } from '../utils/studyLogic';
@@ -68,7 +69,6 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
   const [otpIssuedAtMs, setOtpIssuedAtMs] = useState<number>(0);
   const [enteredOtp, setEnteredOtp] = useState<string>('');
   const [otpStatusMsg, setOtpStatusMsg] = useState<string>('');
-  const [sentViaFonnte, setSentViaFonnte] = useState<boolean>(false);
   const [isSendingOtp, setIsSendingOtp] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string>('');
 
@@ -119,22 +119,34 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
       return;
     }
 
-    const normalized = normalizePhoneNumber(identityInput);
-    if (!normalized || normalized.length < 9) {
+    const phoneValidation = isValidWhatsAppPhone(identityInput);
+    if (!phoneValidation.valid) {
       setAuthError(
-        'Masukkan Nomor WhatsApp yang valid (contoh: 081234567890) atau ketik "admin" untuk masuk sebagai Administrator.'
+        phoneValidation.reason ||
+          'Masukkan Nomor WhatsApp aktif yang valid (diawali 08xx) atau ketik "admin" untuk masuk sebagai Administrator.'
       );
       return;
     }
+
+    const normalized = phoneValidation.normalized;
     const cleanName = studentName.trim() || `Siswa ${normalized.slice(-4)}`;
 
     setIsSendingOtp(true);
     try {
       const result = await sendWhatsAppOtpViaFonnte(identityInput, cleanName);
+      if (!result.sentViaFonnte) {
+        setGeneratedOtp('');
+        setOtpStep('request');
+        setAuthError(
+          result.statusMessage ||
+            'Gagal mengirim OTP ke WhatsApp. Pastikan nomor WhatsApp Anda asli dan aktif.'
+        );
+        return;
+      }
+
       recordOtpRequestTimestamp(Date.now());
       setGeneratedOtp(result.otpCode);
       setOtpIssuedAtMs(result.issuedAtMs);
-      setSentViaFonnte(result.sentViaFonnte);
       setOtpStatusMsg(result.statusMessage);
       setOtpStep('verify');
       setNowMs(Date.now());
@@ -142,7 +154,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
       setAuthError(
         err instanceof Error
           ? err.message
-          : 'Gagal memproses permintaan OTP. Silakan coba lagi.'
+          : 'Gagal memproses permintaan OTP. Pastikan nomor WhatsApp Anda aktif.'
       );
     } finally {
       setIsSendingOtp(false);
@@ -215,7 +227,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
       return;
     }
 
-    if (enteredOtp.trim() !== generatedOtp.trim()) {
+    if (!generatedOtp || enteredOtp.trim() !== generatedOtp.trim()) {
       const updatedLock = recordFailedLoginAttempt(Date.now());
       setNowMs(Date.now());
       if (updatedLock.isLocked) {
@@ -226,7 +238,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
         const remainingTries =
           updatedLock.maxAttempts - updatedLock.failedAttempts;
         setAuthError(
-          `Kode OTP tidak sesuai (Sisa percobaan: ${remainingTries}x). Periksa pesan WhatsApp dari Bot StudyOS.`
+          `Kode OTP tidak sesuai (Sisa percobaan: ${remainingTries}x). Periksa pesan WhatsApp dari Bot Fonnte di ponsel Anda.`
         );
       }
       return;
@@ -258,21 +270,21 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
     >
       <div className="w-full max-w-xl bg-white dark:bg-[#111827] border border-[#E2E8F0] dark:border-[#1E293B] rounded-xl shadow-2xl overflow-hidden my-auto">
         {/* Top Header */}
-        <div className="px-5 py-4 bg-[#F8FAFC] dark:bg-[#090D16] border-b border-[#E2E8F0] dark:border-[#1E293B] flex items-center justify-between gap-3">
-          <div>
-            <span className="text-[11px] font-mono uppercase tracking-wider text-[#2563EB] font-semibold block">
+        <div className="px-4 sm:px-5 py-3.5 sm:py-4 bg-[#F8FAFC] dark:bg-[#090D16] border-b border-[#E2E8F0] dark:border-[#1E293B] flex items-center justify-between gap-2.5">
+          <div className="min-w-0">
+            <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[#2563EB] font-semibold block truncate">
               {isMandatoryGate
                 ? 'GERBANG AKSES PUBLIK · WAJIB LOGIN OTP / ADMIN'
                 : 'PORTAL LOGIN TUNGGAL · CLOUD SYNC & OTP FONNTE'}
             </span>
             <h2
               id="auth-modal-title"
-              className="text-base sm:text-lg font-bold text-[#0F172A] dark:text-[#F8FAFC]"
+              className="text-sm sm:text-lg font-bold text-[#0F172A] dark:text-[#F8FAFC] truncate"
             >
-              StudyOS Kelas 9 SMP (Semester 1 & 2)
+              StudyOS Kelas 9 SMP (Sem 1 & 2)
             </h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <PWAInstallButton />
             {!isMandatoryGate && onClose && (
               <button
@@ -289,7 +301,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
 
         {/* Mandatory Gate Feature Highlights */}
         {isMandatoryGate && (
-          <div className="px-5 py-3 bg-blue-50/70 dark:bg-blue-950/25 border-b border-blue-200/70 dark:border-blue-900/40 grid grid-cols-3 gap-2 text-[11px] text-[#0F172A] dark:text-[#F8FAFC]">
+          <div className="px-4 sm:px-5 py-2.5 sm:py-3 bg-blue-50/70 dark:bg-blue-950/25 border-b border-blue-200/70 dark:border-blue-900/40 grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2 text-[11px] text-[#0F172A] dark:text-[#F8FAFC]">
             <div className="flex items-center gap-1.5">
               <BookOpen className="w-3.5 h-3.5 text-[#2563EB] shrink-0" />
               <span className="truncate font-medium">26 Bab Rumus Lengkap</span>
@@ -307,7 +319,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
 
         {/* Active Session Banner if already logged in */}
         {currentSession && (
-          <div className="px-5 py-3 bg-emerald-50 dark:bg-emerald-950/30 border-b border-emerald-200 dark:border-emerald-900/50 flex flex-wrap items-center justify-between gap-2">
+          <div className="px-4 sm:px-5 py-3 bg-emerald-50 dark:bg-emerald-950/30 border-b border-emerald-200 dark:border-emerald-900/50 flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-xs text-emerald-900 dark:text-emerald-200">
               <UserCheck className="w-4 h-4 text-[#16A34A] shrink-0" />
               <span>
@@ -326,21 +338,20 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
         )}
 
         {/* Unified Single Login Form Body */}
-        <div className="p-5 sm:p-6 space-y-4">
+        <div className="p-4 sm:p-6 space-y-4">
           <div className="p-3 rounded-lg bg-[#F8FAFC] dark:bg-[#090D16] border border-[#E2E8F0] dark:border-[#1E293B] text-xs text-[#475569] dark:text-[#94A3B8] leading-relaxed">
             {isMandatoryGate ? (
               <>
-                Selamat datang di <strong>StudyOS Kelas 9</strong>. Silakan
-                login terlebih dahulu menggunakan{' '}
-                <strong>Nomor WhatsApp (08xx)</strong> untuk menerima kode OTP
-                dan menyinkronkan workspace pribadi Anda, atau ketik{' '}
+                Selamat datang di <strong>StudyOS Kelas 9</strong>. Masukkan{' '}
+                <strong>Nomor WhatsApp Aktif (08xx)</strong> Anda untuk menerima
+                kode OTP langsung di WhatsApp via Bot Fonnte, atau ketik{' '}
                 <code className="font-mono font-bold text-[#2563EB]">admin</code>{' '}
                 untuk akses Administrator.
               </>
             ) : (
               <>
-                Masukkan <strong>Nomor WhatsApp (08xx)</strong> untuk login
-                siswa dengan OTP Bot Fonnte, atau ketik{' '}
+                Masukkan <strong>Nomor WhatsApp Aktif (08xx)</strong> untuk
+                menerima kode OTP di WhatsApp via Bot Fonnte, atau ketik{' '}
                 <code className="font-mono font-bold text-[#2563EB]">admin</code>{' '}
                 pada kolom yang sama untuk masuk sebagai Administrator.
               </>
@@ -370,17 +381,17 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
           {otpStep === 'request' ? (
             <form onSubmit={handlePrimarySubmit} className="space-y-4">
               <div>
-                <div className="flex items-center justify-between mb-1.5">
+                <div className="flex flex-wrap items-center justify-between gap-1 mb-1.5">
                   <label
                     htmlFor="unified-identity-input"
                     className="block text-xs font-semibold text-[#0F172A] dark:text-[#F8FAFC]"
                   >
-                    Nomor WhatsApp / Username
+                    Nomor WhatsApp Aktif / Username
                   </label>
                   <span className="text-[11px] font-mono text-[#2563EB]">
                     {isAdminDetected
                       ? 'Mode Admin Terdeteksi'
-                      : 'Mode OTP WhatsApp Siswa'}
+                      : 'OTP via Bot WA Fonnte'}
                   </span>
                 </div>
                 <input
@@ -393,7 +404,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
                     setIdentityInput(e.target.value);
                     setAuthError('');
                   }}
-                  placeholder="Contoh: 081234567890 atau ketik admin"
+                  placeholder="Masukkan No WhatsApp aktif (08xx) atau ketik admin"
                   className="w-full min-h-[44px] px-3.5 py-2.5 text-sm font-mono rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] bg-white dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] focus:outline-none focus:border-[#2563EB] disabled:opacity-60"
                 />
               </div>
@@ -478,7 +489,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
                 ) : isSendingOtp ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Menghubungi Bot WhatsApp Fonnte...</span>
+                    <span>Mengirim OTP ke WhatsApp via Bot Fonnte...</span>
                   </>
                 ) : !otpRateStatus.allowed ? (
                   <>
@@ -490,7 +501,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
                 ) : (
                   <>
                     <Smartphone className="w-4 h-4" />
-                    <span>Kirim Kode OTP WhatsApp</span>
+                    <span>Kirim Kode OTP ke WhatsApp</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -498,19 +509,14 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} className="space-y-4">
-              <div
-                className={`p-3.5 rounded-lg border text-xs space-y-2 ${
-                  sentViaFonnte
-                    ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
-                    : 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200'
-                }`}
-              >
+              <div className="p-3.5 rounded-lg border text-xs space-y-2 bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200">
                 <p className="font-semibold">{otpStatusMsg}</p>
-                <p className="text-[11px] opacity-90">
-                  Demi keamanan, kode OTP hanya dikirim ke WhatsApp nomor terdaftar
-                  dan tidak pernah ditampilkan di layar ini.
+                <p className="text-[11px] opacity-90 pt-1 border-t border-emerald-200/80 dark:border-emerald-800/80">
+                  Demi keamanan dan mencegah penggunaan nomor palsu, kode OTP
+                  hanya dikirimkan ke aplikasi WhatsApp Anda melalui Bot Fonnte
+                  dan tidak ditampilkan di layar web.
                 </p>
-                <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-black/10 dark:border-white/10">
+                <div className="flex items-center justify-between text-[11px] font-mono pt-1">
                   <span>
                     Status Masa Berlaku:{' '}
                     {otpExpired ? (
@@ -530,7 +536,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
                   >
                     {!otpRateStatus.allowed
                       ? `Kirim Ulang (${otpRateStatus.cooldownRemainingSeconds}d)`
-                      : 'Kirim Ulang OTP'}
+                      : 'Kirim Ulang OTP ke WA'}
                   </button>
                 </div>
               </div>
