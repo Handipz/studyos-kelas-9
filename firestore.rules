@@ -1,0 +1,105 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidWorkspace(data, accountId) {
+      return hasRequiredFields(['accountId', 'phone', 'displayName', 'role', 'payloadJson', 'updatedAt'])
+        && hasOnlyAllowedFields(['accountId', 'phone', 'displayName', 'role', 'payloadJson', 'updatedAt'])
+        && data.accountId == accountId
+        && data.phone is string && data.phone.size() >= 1 && data.phone.size() <= 40
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 120
+        && (data.role == 'student' || data.role == 'admin')
+        && data.payloadJson is string && data.payloadJson.size() >= 2 && data.payloadJson.size() <= 980000
+        && data.updatedAt is string && data.updatedAt.size() <= 64;
+    }
+
+    function isValidRegisteredUser(data, accountId) {
+      return hasRequiredFields(['accountId', 'phone', 'displayName', 'role', 'tasksCount', 'activitiesCount', 'notesCount', 'lastSyncedAt'])
+        && hasOnlyAllowedFields(['accountId', 'phone', 'displayName', 'role', 'tasksCount', 'activitiesCount', 'notesCount', 'lastSyncedAt'])
+        && data.accountId == accountId
+        && data.phone is string && data.phone.size() >= 1 && data.phone.size() <= 40
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 120
+        && (data.role == 'student' || data.role == 'admin')
+        && data.tasksCount is number && data.tasksCount >= 0
+        && data.activitiesCount is number && data.activitiesCount >= 0
+        && data.notesCount is number && data.notesCount >= 0
+        && data.lastSyncedAt is string && data.lastSyncedAt.size() <= 64;
+    }
+
+    function isValidFonnteConfig(data) {
+      return hasRequiredFields(['token', 'otpTemplate', 'updatedAt'])
+        && hasOnlyAllowedFields(['token', 'otpTemplate', 'updatedAt'])
+        && data.token is string && data.token.size() <= 256
+        && data.otpTemplate is string && data.otpTemplate.size() >= 1 && data.otpTemplate.size() <= 1000
+        && data.updatedAt is string && data.updatedAt.size() <= 64;
+    }
+
+    function isValidOtpLog(data, logId) {
+      return hasRequiredFields(['id', 'phone', 'displayName', 'otpCode', 'deliveryMethod', 'status', 'createdAt'])
+        && hasOnlyAllowedFields(['id', 'phone', 'displayName', 'otpCode', 'deliveryMethod', 'status', 'createdAt'])
+        && data.id == logId
+        && data.phone is string && data.phone.size() >= 1 && data.phone.size() <= 40
+        && data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 120
+        && data.otpCode is string && data.otpCode.size() >= 4 && data.otpCode.size() <= 10
+        && (data.deliveryMethod == 'fonnte_wa' || data.deliveryMethod == 'fallback_screen')
+        && data.status is string && data.status.size() <= 300
+        && data.createdAt is string && data.createdAt.size() <= 64;
+    }
+
+    // Connection test path
+    match /test/connection {
+      allow get: if true;
+    }
+
+    // Per-account workspace documents (Phone OTP / Admin accounts)
+    match /study_workspaces/{accountId} {
+      allow get, list: if isValidId(accountId);
+      allow create, update: if isValidId(accountId) && isValidWorkspace(request.resource.data, accountId);
+      allow delete: if isValidId(accountId);
+    }
+
+    // Per-account photo chunks (allows unlimited photos without hitting 1MB doc limit)
+    match /study_photo_notes/{photoDocId} {
+      allow get, list: if true;
+      allow create, update: if request.resource.data.keys().hasAll(['id', 'accountId', 'noteJson', 'updatedAt'])
+        && request.resource.data.accountId is string && request.resource.data.accountId.size() <= 128
+        && request.resource.data.noteJson is string && request.resource.data.noteJson.size() <= 950000;
+      allow delete: if true;
+    }
+
+    // Registered users summary for Admin panel
+    match /registered_users/{accountId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(accountId) && isValidRegisteredUser(request.resource.data, accountId);
+      allow delete: if isValidId(accountId);
+    }
+
+    // App & Fonnte configuration
+    match /app_config/{configId} {
+      allow get: if isValidId(configId);
+      allow create, update: if isValidId(configId) && isValidFonnteConfig(request.resource.data);
+    }
+
+    // OTP verification audit logs
+    match /otp_logs/{logId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(logId) && isValidOtpLog(request.resource.data, logId);
+      allow delete: if isValidId(logId);
+    }
+  }
+}

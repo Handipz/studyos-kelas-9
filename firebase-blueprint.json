@@ -1,0 +1,165 @@
+{
+  "entities": {
+    "UserWorkspace": {
+      "title": "User Workspace",
+      "description": "Stores a student or admin StudyOS Kelas 9 workspace snapshot including compressed photo notes, academic tasks, daily activities, flashcards, mistake logbook, grade simulator, and study logs.",
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "description": "Normalized account identifier (e.g., 628123456789 or admin)"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number or admin username"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Student or Admin display name"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "admin"],
+          "description": "Account role"
+        },
+        "payloadJson": {
+          "type": "string",
+          "description": "Serialized JSON snapshot of the user workspace"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of last workspace update"
+        }
+      },
+      "required": ["accountId", "phone", "displayName", "role", "payloadJson", "updatedAt"]
+    },
+    "RegisteredUser": {
+      "title": "Registered User Summary",
+      "description": "Summary record of registered student and admin accounts for the Admin Dashboard.",
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "description": "Normalized account ID"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number or admin username"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "admin"],
+          "description": "User role"
+        },
+        "tasksCount": {
+          "type": "number",
+          "description": "Count of academic tasks"
+        },
+        "activitiesCount": {
+          "type": "number",
+          "description": "Count of daily activities"
+        },
+        "notesCount": {
+          "type": "number",
+          "description": "Count of Cornell photo notes"
+        },
+        "lastSyncedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of last cloud sync"
+        }
+      },
+      "required": ["accountId", "phone", "displayName", "role", "tasksCount", "activitiesCount", "notesCount", "lastSyncedAt"]
+    },
+    "FonnteSettings": {
+      "title": "Fonnte WhatsApp Bot Settings",
+      "description": "Configuration for the Fonnte WhatsApp OTP bot managed by the Admin.",
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "Fonnte Device API Token"
+        },
+        "otpTemplate": {
+          "type": "string",
+          "description": "Message template for WhatsApp OTP verification"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["token", "otpTemplate", "updatedAt"]
+    },
+    "OtpLogEntry": {
+      "title": "OTP Verification Log",
+      "description": "Audit log of WhatsApp OTP verification codes generated and sent via Fonnte or fallback.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique OTP log identifier"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Normalized target phone number"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Student name"
+        },
+        "otpCode": {
+          "type": "string",
+          "description": "6-digit OTP verification code"
+        },
+        "deliveryMethod": {
+          "type": "string",
+          "enum": ["fonnte_wa", "fallback_screen"],
+          "description": "Delivery channel used"
+        },
+        "status": {
+          "type": "string",
+          "description": "Delivery or verification status message"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when OTP was requested"
+        }
+      },
+      "required": ["id", "phone", "displayName", "otpCode", "deliveryMethod", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/study_workspaces/{accountId}": {
+      "schema": {
+        "$ref": "#/entities/UserWorkspace"
+      },
+      "description": "Per-account Cloud Workspace storage for students and admin"
+    },
+    "/registered_users/{accountId}": {
+      "schema": {
+        "$ref": "#/entities/RegisteredUser"
+      },
+      "description": "Directory of registered accounts and sync statistics"
+    },
+    "/app_config/{configId}": {
+      "schema": {
+        "$ref": "#/entities/FonnteSettings"
+      },
+      "description": "Global application and Fonnte WhatsApp Bot configuration"
+    },
+    "/otp_logs/{logId}": {
+      "schema": {
+        "$ref": "#/entities/OtpLogEntry"
+      },
+      "description": "Verification log entries for Admin inspection"
+    }
+  }
+}

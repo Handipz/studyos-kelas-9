@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Copyright (c) 2026 Hanif. All rights reserved. StudyOS Kelas 9 Brand Icon -->
+  <rect width="512" height="512" rx="112" fill="#2563EB" />
+  <rect x="44" y="44" width="424" height="424" rx="84" fill="#1D4ED8" stroke="#60A5FA" stroke-width="8" />
+  <path d="M136 168C136 150.327 150.327 136 168 136H344C361.673 136 376 150.327 376 168V344C376 361.673 361.673 376 344 376H168C150.327 376 136 361.673 136 344V168Z" fill="#0F172A" />
+  <text x="256" y="252" text-anchor="middle" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="112">S9</text>
+  <text x="256" y="328" text-anchor="middle" fill="#60A5FA" font-family="monospace" font-weight="700" font-size="40">STUDYOS</text>
+</svg>

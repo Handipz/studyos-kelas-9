@@ -1,0 +1,6 @@
+{
+  "name": "StudyOS Kelas 9",
+  "description": "Sistem operasi belajar dan produktivitas komprehensif khusus untuk pelajar Kelas 9 SMP (Semester 1 & 2) dengan Cornell Photo Notes, Spaced Repetition Flashcards, Kurikulum Tracker, Focus Studio, dan Kalkulator Target Rapor.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
