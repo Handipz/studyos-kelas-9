@@ -303,8 +303,8 @@ export interface SendOtpResult {
 /**
  * Sends a 6-digit OTP code via Fonnte WhatsApp API (https://api.fonnte.com/send)
  * and logs the verification event in Cloud Firestore + Local Storage.
- * If Fonnte Token is not configured yet or network blocks it, provides a seamless
- * Fallback OTP so students can always log in on Vercel or any preview device.
+ * The code is only ever delivered through the WhatsApp bot; it is never rendered
+ * in the web UI nor stored in plaintext in the audit log.
  */
 export async function sendWhatsAppOtpViaFonnte(
   rawPhone: string,
@@ -352,22 +352,23 @@ export async function sendWhatsAppOtpViaFonnte(
           resultJson?.reason ||
           resultJson?.detail ||
           'Token Fonnte tidak aktif / kuota perangkat penuh';
-        statusMessage = `Respons Fonnte: ${reason}. Gunakan Kode OTP Cadangan di bawah untuk masuk.`;
+        statusMessage = `Respons Fonnte: ${reason}. OTP tidak terkirim — hubungi Admin untuk mengaktifkan Bot WhatsApp.`;
       }
     } catch {
       statusMessage =
-        'Tidak dapat menghubungi server Fonnte saat ini. Gunakan Kode OTP Cadangan di bawah untuk masuk.';
+        'Tidak dapat menghubungi server Fonnte saat ini. OTP tidak terkirim — hubungi Admin untuk mengaktifkan Bot WhatsApp.';
     }
   } else {
     statusMessage =
-      'Token Bot Fonnte belum diisi oleh Admin. Gunakan Kode OTP Cadangan instan di bawah untuk masuk.';
+      'Token Bot Fonnte belum diisi Admin. OTP tidak dapat dikirim — hubungi Admin untuk mengaktifkan Bot WhatsApp.';
   }
 
   const logEntry: OtpVerificationLog = {
     id: `otp_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
     phone: normalizedPhone,
     displayName: cleanName,
-    otpCode,
+    // Kode asli tidak disimpan/ditampilkan di web; hanya jejak audit.
+    otpCode: '******',
     deliveryMethod: sentViaFonnte ? 'fonnte_wa' : 'fallback_screen',
     status: sentViaFonnte ? 'Terkirim via WhatsApp Fonnte' : statusMessage,
     createdAt: new Date().toISOString(),

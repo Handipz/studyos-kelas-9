@@ -294,7 +294,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
             <p className="text-base font-bold font-mono mt-1.5 text-[#0F172A] dark:text-[#F8FAFC]">
               {fonnteConfig.token.trim()
                 ? 'Token Fonnte Aktif'
-                : 'Mode OTP Cadangan'}
+                : 'Bot WA Belum Aktif'}
             </p>
             <p className="text-[11px] text-[#475569] dark:text-[#94A3B8] mt-0.5">
               Endpoint: https://api.fonnte.com/send
@@ -543,7 +543,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                     token: e.target.value,
                   }))
                 }
-                placeholder="Masukkan Token Fonnte Anda (atau kosongkan untuk mode OTP Cadangan)"
+                placeholder="Masukkan Token Fonnte Anda (wajib, OTP hanya dikirim via Bot WhatsApp)"
                 className="w-full min-h-[44px] px-3.5 py-2 text-xs sm:text-sm font-mono rounded-lg border border-[#E2E8F0] dark:border-[#1E293B] bg-[#F8FAFC] dark:bg-[#090D16] text-[#0F172A] dark:text-[#F8FAFC] focus:outline-none focus:border-[#2563EB]"
               />
             </div>
@@ -792,7 +792,6 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                 <th className="py-2.5 px-3 font-semibold">Waktu</th>
                 <th className="py-2.5 px-3 font-semibold">Nama Siswa</th>
                 <th className="py-2.5 px-3 font-semibold">Nomor WhatsApp</th>
-                <th className="py-2.5 px-3 font-semibold">Kode OTP</th>
                 <th className="py-2.5 px-3 font-semibold">Metode</th>
                 <th className="py-2.5 px-3 font-semibold">Status</th>
               </tr>
@@ -801,7 +800,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
               {otpLogs.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={5}
                     className="py-6 text-center text-[#475569] dark:text-[#94A3B8]"
                   >
                     Belum ada riwayat permintaan OTP.
@@ -822,13 +821,10 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                     <td className="py-2.5 px-3 font-mono text-[#2563EB]">
                       {log.phone}
                     </td>
-                    <td className="py-2.5 px-3 font-mono font-bold tracking-wider text-[#0F172A] dark:text-[#F8FAFC]">
-                      {log.otpCode}
-                    </td>
                     <td className="py-2.5 px-3 font-mono">
                       {log.deliveryMethod === 'fonnte_wa'
                         ? 'Fonnte WhatsApp'
-                        : 'OTP Cadangan'}
+                        : 'Tidak Terkirim'}
                     </td>
                     <td className="py-2.5 px-3 text-[#475569] dark:text-[#94A3B8]">
                       {log.status}

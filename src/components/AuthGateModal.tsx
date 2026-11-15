@@ -13,7 +13,6 @@ import {
   ArrowRight,
   Lock,
   UserCheck,
-  Copy,
   X,
   RefreshCw,
   Clock,
@@ -227,7 +226,7 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
         const remainingTries =
           updatedLock.maxAttempts - updatedLock.failedAttempts;
         setAuthError(
-          `Kode OTP tidak sesuai (Sisa percobaan: ${remainingTries}x). Periksa pesan WhatsApp atau Kode OTP Cadangan.`
+          `Kode OTP tidak sesuai (Sisa percobaan: ${remainingTries}x). Periksa pesan WhatsApp dari Bot StudyOS.`
         );
       }
       return;
@@ -507,23 +506,11 @@ export const AuthGateModal: React.FC<AuthGateModalProps> = ({
                 }`}
               >
                 <p className="font-semibold">{otpStatusMsg}</p>
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-black/10 dark:border-white/10">
-                  <span className="font-mono text-xs">
-                    Kode OTP Verifikasi:{' '}
-                    <strong className="text-sm tracking-widest bg-white dark:bg-[#111827] px-2 py-0.5 rounded border border-current">
-                      {generatedOtp}
-                    </strong>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setEnteredOtp(generatedOtp)}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-bold bg-[#2563EB] text-white hover:bg-blue-700 transition-colors"
-                  >
-                    <Copy className="w-3.5 h-3.5" />
-                    <span>Isi Otomatis OTP</span>
-                  </button>
-                </div>
-                <div className="flex items-center justify-between text-[11px] font-mono pt-1">
+                <p className="text-[11px] opacity-90">
+                  Demi keamanan, kode OTP hanya dikirim ke WhatsApp nomor terdaftar
+                  dan tidak pernah ditampilkan di layar ini.
+                </p>
+                <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-black/10 dark:border-white/10">
                   <span>
                     Status Masa Berlaku:{' '}
                     {otpExpired ? (
