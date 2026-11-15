@@ -31,17 +31,17 @@ Buka http://localhost:3000
 
 ## Deploy
 
-Situs statis disajikan GitHub Pages dari branch **`gh-pages`** (bukan dari `main`). Source di `main`, hasil build di `gh-pages`.
-
-Setelah mengubah kode, jalankan:
+Otomatis lewat GitHub Actions (`.github/workflows/deploy.yml`): setiap push ke `main`, runner build dengan `BASE_PATH=/<nama-repo>/` lalu mempublikasikan `dist/` ke GitHub Pages. Tidak ada branch hasil build; Pages di-set ke `build_type: workflow`.
 
 ```
-powershell -File scripts/deploy-pages.ps1
+git add -A
+git commit -m "update"
+git push
 ```
 
-Script itu build ulang dengan `BASE_PATH=/studyos-kelas-9/`, lalu force-push isi `dist/` ke `gh-pages`. Pages otomatis rebuild ~1 menit.
+Selesai — Pages live ~1 menit setelah workflow hijau.
 
-`BASE_PATH` wajib diisi nama repo karena Pages menyajikan app dari sub-path. Untuk deploy di root domain (Vercel/Netlify) biarkan kosong / tidak diisi.
+`BASE_PATH` wajib terisi nama repo karena Pages menyajikan app dari sub-path (`/studyos-kelas-9/`). Untuk deploy di root domain (Vercel/Netlify) biarkan kosong.
 
 ## Catatan Firebase
 
